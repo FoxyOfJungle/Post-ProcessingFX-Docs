@@ -1,11 +1,33 @@
-* [Home](/)
-* [Requirements](./pages/requirements.md)
-* [Installation](./pages/installation.md)
-* [Getting Started](./pages/quick-start.md)
-* Effects
+- Post-Processing FX v2.0
+<br /><br />
+----
+
+* [Home](/ "Post-Processing FX")
+* [Requirements](./pages/requirements.md "Requirements")
+* [Installation](./pages/installation.md "Installation")
+* [Getting Started](./pages/quick-start.md "Getting Started")
+
+<br />
+
+----
+- Effects
+
 * [Bloom](./pages/effects/bloom.md)
 * [Motion Blur](./pages/effects/motion-blur.md)
-* [Scripting](scripting.md)
+
+<br />
+
+----
+- Scripting
+
+* [Controlling effects using code](./pages/scripting/effects_customize.md)
+* [Functions](functions.md)
+
+<br />
+
+----
+- Others
+
 * [Debugging Post-Processing FX](debugging.md)
 * [License](license.md)
 * [Credits](credits.md)
