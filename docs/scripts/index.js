@@ -16,7 +16,7 @@ window.$docsify = {
         '<footer>',
         '<p align="center">',
         '<br><span>Post-Processing FX © 2022 by <a href="https://twitter.com/foxyofjungle">FoxyOfJungle</a></span><br>',
-        '<span>Docs created with help of <a href="https://twitter.com/RookTKO">RookTKO</a>, using <a href="https://github.com/docsifyjs/docsify" target="_blank">Docsify</a>.</span>',
+        '<span>Docs created by <a href="https://twitter.com/foxyofjungle" target="_blank">Mozart Junior</a>, with help of <a href="https://twitter.com/RookTKO" target="_blank">RookTKO</a>, using <a href="https://github.com/docsifyjs/docsify" target="_blank">Docsify</a>.</span>',
         '</p>',
         '</footer>'
       ].join('');

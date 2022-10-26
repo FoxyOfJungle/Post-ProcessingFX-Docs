@@ -4,7 +4,7 @@ This page contains information on system requirements and compatibility of the P
 ## Compatibility <!-- {docsify-ignore} -->
 
 Post-Processing FX is compatible with all platforms currently supported by GameMaker:
-* Windows, Mac, Ubuntu, Android, iOS, HTML5, OperaGX, UWP, Playstation 4, Playstation 5, Xbox One, Xbox Series X | S and Nintendo Switch.
+* Windows, Mac, Ubuntu, Android, iOS, HTML5, GX.Games, UWP, Playstation 4, Playstation 5, Xbox One, Xbox Series X | S and Nintendo Switch.
 
 It uses only native GML code, in addition to shaders, without using any extra dependencies.
 
@@ -14,23 +14,28 @@ Post-Processing FX works in split-screen (in many screens as needed).
 ## GameMaker Version <!-- {docsify-ignore} -->
 
 Post-Processing FX is compatible with the following versions of GameMaker:
-* GameMaker v2022.6.1.26 + | Runtime v2022.6.1.40 +
+* GameMaker v2022.8 + | Runtime v2022.8 +
 
+It may be able to import into older versions, but this has not been tested.
 
 ## Shader Language <!-- {docsify-ignore} -->
 
 Post-Processing FX has all shaders written in GLSL ES language (OpenGL for Embedded Systems), which is compatible with all platforms.
 
+<a href="https://en.wikipedia.org/wiki/OpenGL_ES" target="_blank">![Bulb + PPFX](/../images/GLSL_ES.png) </a>
 
 ## Runner <!-- {docsify-ignore} -->
 
 Post-Processing FX is compatible with both x86 and x64 architectures.
-YYC (YoYo Compiler) is supported.
+YYC (YoYo Compiler) is also supported.
 
+## System Requirements <!-- {docsify-ignore} -->
+
+Post-Processing FX works well on low-end devices, where the performance of some effects (Gaussian Blur, Depth of Field, Sunshafts...) depends on their quality settings.
 
 ## Other Assets <!-- {docsify-ignore} -->
 
-Post-Processing FX has been successfully tested and is compatible with the following assets:
+Post-Processing FX has been successfully tested and is compatible with the following assets (graphics based):
 * Bulb Lighting (Juju Adams)
 * Scribble (Juju Adams)
 * Transitions Pro (FoxyOfJungle)

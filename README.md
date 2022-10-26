@@ -1,8 +1,10 @@
-# Headline
+# Post-Processing FX Docs
 
-> An awesome project.
+> An awesome documentation. Work in Progress.
 
 # Dependencies
 
-Tailwind CSS for styling
 Docsify for documentation
+Tailwind CSS for styling
+
+Thanks to RookTKO, by initial setup help.

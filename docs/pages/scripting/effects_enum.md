@@ -1,0 +1,64 @@
+
+## Effects Enumerator <!-- {docsify-ignore} -->
+
+They are used to access the effect ID. Effect indices can be obtained using the **PP_EFFECT** enum.
+
+Example:
+```gml
+PP_EFFECT.ZOOM
+```
+So I can indicate which effect I'm "accessing". This can be useful in the following case, for example:
+```gml
+ppfx_effect_set_enable(ppfx_id, PP_EFFECT.ZOOM, false);
+```
+In the example above, I turned off the "Zoom" effect.  
+
+Effect index list:
+```gml
+ROTATION
+ZOOM
+SHAKE
+LENS_DISTORTION
+PIXELIZE
+SWIRL
+PANORAMA
+SINE_WAVE
+GLITCH
+DISPLACEMAP
+WHITE_BALANCE
+BORDER
+FXAA
+SUNSHAFTS
+BLOOM
+DEPTH_OF_FIELD
+MOTION_BLUR
+BLUR_RADIAL
+LUT3D
+SHADOW_MIDTONE_HIGHLIGHT
+EXPOSURE
+POSTERIZATION
+BRIGHTNESS
+SATURATION
+CONTRAST
+TONE_MAPPING
+LIFT_GAMMA_GAIN
+HUE_SHIFT
+COLORIZE
+INVERT_COLORS
+TEXTURE_OVERLAY
+PALETTE_SWAP
+BLUR_KAWASE
+BLUR_GAUSSIAN
+CHROMABER
+MIST
+SPEEDLINES
+DITHERING
+NOISE_GRAIN
+VIGNETTE
+NES_FADE
+FADE
+SCANLINES
+CINEMA_BARS
+COLOR_BLINDNESS
+CHANNELS
+```
