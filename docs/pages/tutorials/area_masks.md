@@ -5,7 +5,7 @@ Area masks are areas of the screen on which you can draw only part of the post-p
 
 ![Layer Range](./images/AreaMasks_0.png)
 
-> This feature is intended for UI use.
+> This feature is intended for UI use only.
 
 
 ## Creating glass effect for UI <!-- {docsify-ignore} -->
@@ -15,33 +15,33 @@ We're going to use Kawase Blur, which is the lightest blur effect.
 
 In `Create Event`:
 ```gml
-ui_blur_id = ppfx_create();
-ppfx_set_draw_enable(ui_blur_id, false); // disable auto-draw of this system - because we will draw it manually, using the area functions!
-var _profile_blur = ppfx_profile_create("Glass Blur", [
-	new pp_blur_kawase(true, 0.4),
+ui_blur_id = new PPFX_System();
+ui_blur_id.SetDrawEnable(false); // disable auto-draw of this system - because we will draw it manually, using the area functions!
+var _profile_blur = new PPFX_Profile("Glass Blur", [
+	new FX_KawaseBlur(true, 0.4),
 ]);
-ppfx_profile_load(ui_blur_id, _profile_blur);
+ui_blur_id.ProfileLoad(_profile_blur);
 ```
 
 </br>
 Generally, you will already be using a post-processing system before, so you should use the main surface as a base to render the system used for blur:
 
-In `Post-Draw` event:
+In `Draw GUI Begin` event:
 ```gml
-var _pos = application_get_position();
-var _xx = _pos[0];
-var _yy = _pos[1];
-var _ww = _pos[2]-_pos[0];
-var _wh = _pos[3]-_pos[1];
+var _xx = 0;
+var _yy = 0;
+var _ww = display_get_gui_width();
+var _wh = display_get_gui_height();
 var _vw = surface_get_width(application_surface);
 var _vh = surface_get_height(application_surface);
 
-// render main system from "Main"
-ppfx_draw(application_surface, _xx, _yy, _ww, _wh, _vw, _vh, ppfx_id);
+// render main system from "Main" (this is your fullscreen system)
+ppfx_id.Draw(application_surface, _xx, _yy, _ww, _wh, _vw, _vh);
 
 // render system from "Glass Blur", using main post-processing surface
-ppfx_draw(ppfx_get_render_surface(ppfx_id), _xx, _yy, _ww, _wh, _vw, _vh, ui_blur_id);
+ui_blur_id.Draw(ppfx_id.GetRenderSurface(), _xx, _yy, _ww, _wh, _vw, _vh);
 ```
+In the example above, we create a Blur effect, using the full-screen rendering "image" (surface) as a base.
 
 </br>
 

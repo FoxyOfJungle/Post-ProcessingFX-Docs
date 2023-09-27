@@ -1,4 +1,4 @@
-- Post-Processing FX v2.2
+- Post-Processing FX v4.0+
 <br /><br />
 ----
 
@@ -13,7 +13,7 @@
 - Scripting
 
 * [Controlling effects using code](./pages/scripting/effects_customize.md)
-* [Functions](./pages/scripting/functions_list.md)
+* [Modules & Functions](./pages/scripting/functions_list.md)
 * [Effects Enum](./pages/scripting/effects_enum.md "List of effects enumerator")
 * [Effects Parameters](./pages/scripting/param_list.md "Effect parameters list")
 
@@ -28,20 +28,25 @@
 <br />
 
 ----
-- Advanced
+- Tutorials
 
-* [Layers](./pages/advanced/layers.md "Adding effects to layers")
-* [Multiple Stacks](./pages/advanced/multiple_stacks.md "Multiple Rendering Stacks")
-* [Area Masks](./pages/advanced/area_masks.md "Using area masks for UI")
-* [Adding Custom Effects](./pages/advanced/add_custom_effects.md "Adding custom effects to the stack")
+* [Updating PPFX](./pages/tutorials/updating_ppfx.md "Updating Post-Processing FX")
+* [Debugging](./pages/tutorials/debugging.md "Debugging Post-Processing FX")
+* [Layers](./pages/tutorials/layers.md "Adding effects to layers")
+* [Multiple Stacks](./pages/tutorials/multiple_stacks.md "Multiple Rendering Stacks")
+* [Area Masks](./pages/tutorials/area_masks.md "Using area masks for UI")
+* [Adding External Effects](./pages/tutorials/add_external_effects.md "Adding custom effects to the stack")
+* [Creating Your Own Effect](./pages/tutorials/creating_your_effect.md "Creating your own effect")
 
 <br />
 
 ----
 - Others
 
-* [Debugging](./pages/others/debugging.md "Debugging Post-Processing FX")
 * [License](./pages/others/license.md "End User License Agreement")
 * [Credits](./pages/others/credits.md)
 
 <br />
+
+
+

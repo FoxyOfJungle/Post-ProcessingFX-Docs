@@ -13,10 +13,16 @@ Post-Processing FX works in split-screen (in many screens as needed).
 
 ## GameMaker Version <!-- {docsify-ignore} -->
 
-Post-Processing FX is compatible with the following versions of GameMaker:
-* GameMaker v2022.8 + | Runtime v2022.8 +
+Post-Processing FX 4.0+ is compatible with the following versions of GameMaker:
+* GameMaker v2023.2+ | Runtime v2023.2+
 
-It may be able to import into older versions, but this has not been tested.
+Post-Processing FX 2.3 is compatible with the following versions of GameMaker:
+* GameMaker v2022.11 LTS+ | Runtime v2022.11+
+
+Do not use runtime v2023.6, because there is a shader bug that affects PPFX. v2023.8 is perfectly compatible.
+
+> Please note that GameMaker v2022.2+ brings modifications to the GameMaker project structure, in addition to HDR support. So PPFX v3.0 above will not work on older versions.
+
 
 ## Shader Language <!-- {docsify-ignore} -->
 

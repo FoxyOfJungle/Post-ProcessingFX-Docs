@@ -1,125 +1,98 @@
 
-## PPFX Functions List <!-- {docsify-ignore} -->
+## Post-Processing FX Functions List <!-- {docsify-ignore} -->
 
 The following are all the functions that Post-Processing FX has to generate the effects and control them.  
 Although the topics are separate, they are all linked in some way. Parameters inside brackets are optional.
+
+Note: All content here is also available using Feather, from GameMaker, offline.
+
 <br>
 
 
-# Application Render
 
-> The following functions handle the initial preparation of the game rendering. Use these functions to disable application_surface so that PPFX has full control of rendering.
+# PPFX_System()
 
-## ppfx_application_render_init()
+`PPFX_System()` is essentially responsible for drawing the visual effects. It works both for full screen and for layers.
+You can create as many systems as you need, depending on what you're going to do.
+Examples:
 
-```gml
-ppfx_application_render_init();
-```
-This function disables the default drawing of application_surface.  
-It only needs to be used once, which can be on an object in the first room of the game, or even in a script.
+<ul class="a">
+<li>For a full-screen game, one system is enough;</li>
+<li>To use in layers, you will need another system (do not use the same system as fullscreen), for each layer range;</li>
+<li>For a split-screen game, you'll need 4 (or 2, depending on what you want) systems (unless you use the same color grading system for both 4 screens);</li>
+<li>To use with Areas, you will need another system;</li>
+</ul>
 
-#### Returns: [Undefined] >> N/A
-
-<br><br><br>
-
-
-
-## ppfx_application_render_free()
-
-```gml
-ppfx_application_render_free();
-```
-This function activates the default application_surface again, and causes the Post-Processing FX to no longer be displayed. If you're looking to destroy a post-processing system, use ppfx_destroy() instead.
-
-#### Returns: [Undefined] - N/A
-
-<br><br><br>
+> By instantiating the system with "new" operator, you will get a struct, in which you will be able to control the system with the methods below.
 
 
 
-## ppfx_application_render_set_enable()
 
+## .ProfileLoad()
 
 ```gml
-ppfx_application_render_set_enable([enabled]);
+.ProfileLoad(profile_index, merge);
 ```
-Toggle whether or not to enable the default drawing of application_surface.
+This function loads a previously created profile.
+Which means that the post-processing system will apply the settings of the effects contained in the profile, showing them consequently.
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| [enabled] | Real | Will be either true (enabled, the default value) or false (disabled).<br>The drawing will toggle if nothing or -1 is entered. |  
-
-#### Returns: [Undefined] - N/A
-
-<br><br><br><br>
-
-
-
-
-
-# PPFX System
-
-> The following functions deal with the post-processing system itself.
-
-## ppfx_create()
-
-```gml
-ppfx_create();
-```
-Create post-processing system id to be used by the other functions.
+| profile_index | Struct | Profile id created with "new PPFX_Profile()". |  
+| merge | Bool | If you want to merge the profile with existing effects in the system (without replacing). |  
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_id = ppfx_create();
+main_profile = new PPFX_Profile("Main", effects);
+
+ppfx_id.ProfileLoad(main_profile);
 ```
-The example above creates a system and references it in a variable.
+The code above creates a profile and loads it into the ppfx_id id system.
 
 <br><br><br>
 
 
 
-## ppfx_destroy()
+
+## .ProfileUnload()
 
 ```gml
-ppfx_destroy(pp_index);
+.ProfileUnload();
 ```
-Destroy a previously created post-processing system, freeing from memory all the resources it created at runtime. Only use this if you will no longer be using a system.
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
+This function removes any profile associated with this post-processing system, consequently disabling all effects.
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_destroy(ppfx_id);
+ppfx_id.ProfileUnload();
 ```
-The example above destroys the "ppfx_id" post-processing system.
+The code above causes the ppfx_id system to remove its profile.
 
 <br><br><br>
 
 
 
-## ppfx_draw()
+
+## .Draw()
 
 ```gml
-ppfx_draw(surface, x, y, w, h, view_w, view_h, pp_index);
+.Draw(surface, x, y, w, h, surface_width, surface_height);
 ```
-Draw post-processing system on screen
+Draw post-processing system on screen.
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
 | surface | Surface | Render surface to copy from. (You can use application_surface). |  
-| x | Real | Horizontal X position of rendering. |  
-| y | Real | Vertical Y position of rendering. |  
-| w | Real | Width of the stretched game view. |  
-| h | Real | Height of the stretched game view. |  
-| view_w | Real | Width of your game view (Can use view port or window/gui width, for example). |  
-| view_h | Real | Height of your game view (Can use view port or window/gui height, for example). |  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
+| x | Real | The x position og where to draw the surface. |  
+| y | Real | The y position og where to draw the surface. |  
+| w | Real | The width at which to draw the surface. |  
+| h | Real | The height at which to draw the surface. |  
+| surface_width | Real | Width resolution of your game screen (Can use width of application_surface or viewport). |  
+| surface_height | Real | Height resolution of your game screen (Can use height of application_surface or viewport). |  
+
 
 #### Returns: [Undefined] - N/A
 
@@ -128,7 +101,7 @@ Draw post-processing system on screen
 var _pos = application_get_position();
 var _view_width = surface_get_width(application_surface), _view_height = surface_get_height(application_surface);
 
-ppfx_draw(application_surface, _pos[0], _pos[1], _pos[2]-_pos[0], _pos[3]-_pos[1], _view_width, _view_height, ppfx_id);
+ppfx_id.Draw(application_surface, _pos[0], _pos[1], _pos[2]-_pos[0], _pos[3]-_pos[1], _view_width, _view_height);
 ```
 The above example draws the "ppfx_id" post-processing system on the screen. Inside Post-Draw event and at position 0, 0, using the window size and using the camera resolution.
 
@@ -136,75 +109,193 @@ The above example draws the "ppfx_id" post-processing system on the screen. Insi
 
 
 
-## ppfx_exists()
+
+
+## .DrawInFullscreen()
 
 ```gml
-ppfx_exists(pp_index);
+.DrawInFullscreen(surface);
 ```
-Check if post-processing system exists.
+Similar to `.Draw`, but it handles the sizes and positions for you, for ease.  
+This function automatically detects the draw event you are drawing (Post-Draw or Draw GUI Begin).  
+It uses the size of the referenced surface for internal rendering resolution (example: application_surface size).  
+For the width and height size (scaled rendering size): If drawing in Post-Draw, is the size of the window (frame buffer). If in Draw GUI Begin, the size of the GUI.  
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
-
-
-#### Returns: [Bool] - If system exists or not
-
-### Example:
-```gml
-var _exists = ppfx_exists(pp_index);
-```
-
-<br><br><br>
-
-
-
-## ppfx_set_global_intensity()
-
-```gml
-ppfx_set_global_intensity(pp_index, value);
-```
-Defines the overall draw intensity of the post-processing system.
-The global intensity defines the interpolation between the original image and with the effects applied.
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
-| value | Struct | Intensity, 0 for none (default image), and 1 for full. |  
+| surface | Surface | Render surface to copy from. (You can use application_surface). |  
 
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_set_global_intensity(ppfx_id, 0.5);
+ppfx_id.DrawInFullscreen(application_surface);
 ```
-In the example above, the global system strength ppfx_id is set to 0.5.
+The above example draws the "ppfx_id" post-processing system on the screen.
 
 <br><br><br>
 
 
 
-## ppfx_set_draw_enable()
+
+
+## .Destroy()
 
 ```gml
-ppfx_set_draw_enable(pp_index, enable);
+.Destroy();
+```
+Destroy a previously created post-processing system, freeing from memory all the resources it created at runtime. Only use this if you will no longer be using a system.
+
+
+#### Returns: [Undefined] - N/A
+
+### Example:
+```gml
+ppfx_id.Destroy();
+```
+The example above destroys the "ppfx_id" post-processing system.
+
+<br><br><br>
+
+
+
+
+
+## .Clean()
+
+```gml
+.Clean();
+```
+Clean post-processing system, without destroying it.
+Useful for when toggling effects and want to make sure existing surfaces are destroyed.
+
+#### Returns: [Undefined] - N/A
+
+### Example:
+```gml
+ppfx_id.Clean();
+```
+In the example above, the post-processing system is cleaned up, resetting all surfaces and so on.
+
+<br><br><br>
+
+
+
+
+## .SetEffectParameter()
+
+```gml
+.SetEffectParameter(effect_index, param, value);
+```
+Modify a single parameter (setting) of an effect.
+Use this to modify an effect's attribute in real-time.
+
+![Render Resolution](/images/PPFXRenderResolution.gif)
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| effect_index | Real | Use the enumerator, example: FX_EFFECT.BLOOM. |  
+| param | Real | Parameter macro. Example: PP_BLOOM_COLOR. |  
+| value | Real | Parameter value. Example: make_color_rgb_ppfx(255, 255, 255). |  
+
+#### Returns: [Undefined] - N/A
+
+### Example:
+```gml
+ppfx_id.SetEffectParameter(FX_EFFECT.LENS_DISTORTION, PP_LENS_DISTORTION_AMOUNT, 0.5);
+```
+In the example above, we set the amount of distortion for the Lens Distortion effect to 0.5.
+
+<br><br><br>
+
+
+
+
+
+## .SetEffectParameters()
+
+```gml
+.SetEffectParameters(effect_index, param, value);
+```
+Modify many parameters (setting) of an effect. Use this to modify an effect's attribute in real-time.
+
+> Note that this function uses a internal loop to access the array, which makes it slower.
+
+![Render Resolution](/images/PPFXRenderResolution.gif)
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| effect_index | Real | Use the enumerator, example: FX_EFFECT.BLOOM. |  
+| params_array | Real | Array with the effect parameters. Use the pre-defined macros, for example: [PP_BLOOM_COLOR, PP_BLOOM_INTENSITY]. |  
+| values_array | Real | Array with parameter values, must be in the same order. |  
+
+#### Returns: [Undefined] - N/A
+
+### Example:
+```gml
+ppfx_id.SetEffectParameters(FX_EFFECT.BLOOM, [PP_BLOOM_INTENSITY, PP_BLOOM_THRESHOLD], [3, 0.7]);
+```
+In the example above, we specify the effect (which is an enum), the array of macros of the parameters we want to modify, and finally the desired array of value. They must need to be in the same order they were written.
+
+<br><br><br>
+
+
+
+
+
+## .SetEffectEnable()
+
+```gml
+.SetEffectEnable(effect_index, enable);
+```
+Toggle whether the post-processing system can render.
+Please note that if enabled, it can render to the surface even if not drawing! Disabling this releases the system usage on the GPU.  
+
+> Note that if the effect was active before and you turned it off later (using this function), its surface will still exist, so you need to use .Clean() in the post-processing system to clean up any unused surfaces. This is ONLY valid for effects that have individual stacks, such as: Bloom, Depth Of Field, FXAA, HQ4X, VHS, Palette Swap, Blurs, Chromatic Aberration, Sunshafts and Slow Motion.
+
+![Draw Enable](/images/PPFXRenderEnable.gif)
+*In the image above, the system, when deactivated, uses the original surface without the effects. So the surface of the disabled system stops updating.*
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| effect_index | Real/Enum | Use the enumerator, example: FX_EFFECT.BLOOM. |  
+| enable | Bool/Real | Will be either true (enabled, the default value) or false (disabled). The drawing will toggle if nothing or -1 is entered. |  
+
+#### Returns: [Undefined] - N/A
+
+### Example:
+```gml
+ppfx_id.SetEffectEnable(FX_EFFECT.BLOOM, false);
+```
+In the example above, we have deactivated the Bloom effect from the ppfx_id system.
+
+<br><br><br>
+
+
+
+
+
+## .SetDrawEnable()
+
+```gml
+.SetDrawEnable(enable);
 ```
 Toggle whether the post-processing system can draw.  
 Please note that if disabled, it may still be rendered if rendering is enabled (will continue to demand GPU).
 
+![Draw Enable](/images/PPFXDrawEnable.gif)
+*In the image above, another system still can to get its surface, even without drawing.*
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
 | enable | Bool/Real | Will be either true (enabled, the default value) or false (disabled). The drawing will toggle if nothing or -1 is entered. |  
-
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_set_draw_enable(ppfx_id, false);
+ppfx_id.SetDrawEnable(false);
 ```
 In the example above, we disable system drawing.
 
@@ -212,26 +303,26 @@ In the example above, we disable system drawing.
 
 
 
-## ppfx_set_render_enable()
+## .SetRenderEnable()
 
 ```gml
-ppfx_set_render_enable(pp_index, enable);
+.SetRenderEnable(enable);
 ```
 Toggle whether the post-processing system can render.
-Please note that if enabled, it can render to the surface even if not drawing! Disabling this releases the system usage on the GPU.
+Please note that if enabled, it can render to the surface even if not drawing! Disabling this releases the system usage on the GPU.  
 
+![Draw Enable](/images/PPFXRenderEnable.gif)
+*In the image above, the system, when deactivated, uses the original surface without the effects. So the surface of the disabled system stops updating.*
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
 | enable | Bool/Real | Will be either true (enabled, the default value) or false (disabled). The drawing will toggle if nothing or -1 is entered. |  
-
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_set_render_enable(ppfx_id, false);
+ppfx_id.SetRenderEnable(false);
 ```
 In the example above, we disable system rendering.
 
@@ -239,25 +330,56 @@ In the example above, we disable system rendering.
 
 
 
-## ppfx_set_render_resolution()
+
+
+## .SetGlobalIntensity()
 
 ```gml
-ppfx_set_render_resolution(pp_index, resolution);
+.SetGlobalIntensity(value);
 ```
-This function modifies the final rendering resolution of the post-processing system, based on a percentage (0 to 1).
+Defines the overall draw intensity of the post-processing system.
+The global intensity defines the interpolation between the original image and with the effects applied.
 
+![Global Intensity](/images/GlobalIntensity.gif)
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
-| resolution | Real | Value from 0 to 1 that is multiplied internally with the final resolution of the system's final rendering view. |  
-
+| value | Struct | Intensity, 0 for none (default image), and 1 for full. |  
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_set_render_resolution(ppfx_id, 0.5);
+ppfx_id.SetGlobalIntensity(0.5);
+```
+In the example above, the global system strength ppfx_id is set to 0.5.
+
+<br><br><br>
+
+
+
+
+
+
+
+## .SetRenderResolution()
+
+```gml
+.SetRenderResolution(resolution);
+```
+This function modifies the final rendering resolution of the post-processing system, based on a percentage (0 to 1 - full).
+
+![Render Resolution](/images/PPFXRenderResolution.gif)
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| resolution | Real | Value from 0 to 1 that is multiplied internally with the final resolution of the system's final rendering view. |  
+
+#### Returns: [Undefined] - N/A
+
+### Example:
+```gml
+ppfx_id.SetRenderResolution(0.5);
 ```
 In the example above, we set the render resolution to half size.
 
@@ -265,74 +387,90 @@ In the example above, we set the render resolution to half size.
 
 
 
-## ppfx_get_global_intensity()
+
+
+## .IsDrawEnabled()
 
 ```gml
-ppfx_get_global_intensity(pp_index, resolution);
+.IsDrawEnabled();
 ```
-Get the overall draw intensity of the post-processing system.
-The global intensity defines the interpolation between the original image and with the effects applied.
+This function returns whether the system is drawing or not.
 
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
-
-
-#### Returns: [Real] - Global intensity, value from 0 to 1
+#### Returns: [Bool] - true: is drawing. false: not drawing.
 
 ### Example:
 ```gml
-var _intensity = ppfx_get_global_intensity(ppfx_id);
+var _drawing = ppfx_id.IsDrawEnabled();
+show_debug_message(_drawing);
 ```
-In the example above, we get the global intensity of the ppfx_id system.
+In the example above, we return whether the system is drawing to a variable, and then show a message on the console.
 
 <br><br><br>
 
 
 
-## ppfx_get_render_resolution()
+
+
+## .IsRenderEnabled()
 
 ```gml
-ppfx_get_render_resolution(pp_index);
+.IsRenderEnabled();
 ```
-Returns the post-processing system rendering percentage (0 to 1).
+This function returns whether the system is rendering or not.
 
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
-
-
-#### Returns: [Real] - Render resolution, value from 0 to 1
+#### Returns: [Bool] - true: is rendering. false: not rendering.
 
 ### Example:
 ```gml
-var _resolution = ppfx_get_render_resolution(ppfx_id);
+var _rendering = ppfx_id.IsRenderEnabled();
+show_debug_message(_rendering);
 ```
-In the example above, we get the render resolution of the ppfx_id system.
+In the example above, we return whether the system is rendering to a variable, and then show a message on the console.
 
 <br><br><br>
 
 
 
-## ppfx_get_render_surface()
+
+
+## .IsEffectEnabled()
 
 ```gml
-ppfx_get_render_surface(pp_index);
+.IsEffectEnabled(effect_index);
+```
+This function returns whether an effect is enabled or not.
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| effect_index | Real/Enum | Use the enumerator, example: FX_EFFECT.BLOOM. |  
+
+#### Returns: [Bool] - true: is enabled. false: not enabled.
+
+### Example:
+```gml
+var _enabled = ppfx_id.IsEffectEnabled(FX_EFFECT.BLOOM);
+show_debug_message(_enabled);
+```
+In the example above, we return whether the effect is enabled to a variable, and then show a message on the console.
+
+<br><br><br>
+
+
+
+
+
+## .GetRenderSurface()
+
+```gml
+.GetRenderSurface();
 ```
 Returns the post-processing system final rendering surface.
 
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
-
-
-#### Returns: [Surface] - Surface id
+#### Returns: [Surface] - Surface id.
 
 ### Example:
 ```gml
-ppfx_draw(ppfx_get_render_surface(ppfx_id), _xx, _yy, _ww, _wh, _vw, _vh, ui_blur_id);
+ui_blur_id.DrawInFullscreen(ppfx_id.GetRenderSurface());
 ```
 In the example above, a second system is drawn using the final surface of the previous system.
 
@@ -340,24 +478,94 @@ In the example above, a second system is drawn using the final surface of the pr
 
 
 
-## ppfx_is_draw_enabled()
+
+## .GetStackSurface()
 
 ```gml
-ppfx_is_draw_enabled(pp_index);
+.GetStackSurface(index);
+```
+Returns the specific stack rendering surface.
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| index | Real/Enum | The stack index. |  
+
+#### Returns: [Surface] - Surface id.
+
+### Example:
+```gml
+var _surface = ppfx_id.GetStackSurface(0);
+```
+In the example above, we are getting the surface from the "Base" stack (with effects like: Rotation, Zoom, etc).
+
+<br><br><br>
+
+
+
+
+
+## .GetEffectParameter()
+
+```gml
+.GetEffectParameter(effect_index, param);
+```
+Returns the specific stack rendering surface.
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| effect_index | Real/Enum | Effect index. Use the enumerator, example: FX_EFFECT.BLOOM. |  
+| param | Macro | Parameter macro. Example: PP_BLOOM_COLOR. |  
+
+#### Returns: [Any] - Effect parameter value.
+
+### Example:
+```gml
+var _intensity = ppfx_id.GetEffectParameter(FX_EFFECT.BLOOM, PP_BLOOM_INTENSITY);
+```
+In the example above, we get the intensity of the Bloom effect.
+
+<br><br><br>
+
+
+
+
+
+
+## .GetGlobalIntensity()
+
+```gml
+.GetGlobalIntensity();
+```
+Get the overall draw intensity of the post-processing system.
+The global intensity defines the interpolation between the original image and with the effects applied.
+
+#### Returns: [Real] - Global intensity, value from 0 to 1.
+
+### Example:
+```gml
+var _intensity = ppfx_id.GetGlobalIntensity();
+```
+In the example above, we get the global intensity of the ppfx_id system.
+
+<br><br><br>
+
+
+
+
+
+## .GetRenderResolution()
+
+```gml
+.GetRenderResolution();
 ```
 Returns the post-processing system rendering percentage (0 to 1).
 
 
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
-
-
-#### Returns: [Bool] - If system drawing is enabled or not
+#### Returns: [Real] - Render resolution, value from 0 to 1.
 
 ### Example:
 ```gml
-var _resolution = ppfx_get_global_intensity(ppfx_id);
+var _resolution = ppfx_id.GetRenderResolution();
 ```
 In the example above, we get the render resolution of the ppfx_id system.
 
@@ -366,56 +574,113 @@ In the example above, we get the render resolution of the ppfx_id system.
 
 
 
-## ppfx_is_render_enabled()
+
+## .SetBakingLUT()
 
 ```gml
-ppfx_is_render_enabled(pp_index);
+.SetBakingLUT(sprite);
 ```
-Returns true if post-processing system rendering is enabled, and false if not.
+Set a sprite (neutral LUT image) to bake all color grading stack into it.
 
+> Note that this is a secret function and therefore does not appear in Intellisense.
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create() |  
+| sprite | Sprite | The neutral linear LUT to be used to bake. You can use a LUT returned by PPFX_LUTGenerator(). Use -1 to remove it. |  
 
-
-#### Returns: [Bool] - If system drawing is enabled or not
+#### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-var _resolution = ppfx_get_global_intensity(ppfx_id);
+lut_generator_baking = new PPFX_LUTGenerator();
+ppfx_id.SetBakingLUT(lut_generator_baking.GenerateGrid(8, true));
 ```
-In the example above, we get the render resolution of the ppfx_id system.
+In the example above, we created a neutral LUT sprite and sent it to PPFX.
 
-<br><br><br><br>
+<br><br><br>
+
+ 
 
 
 
-# Profiles
-
-> Profiles
-
-## ppfx_profile_create()
+## .GetBakedLUT()
 
 ```gml
-ppfx_profile_create(name, effects_array);
+.GetBakedLUT();
 ```
-Create a profile with predefined effects.
+Bake all color grading stack into a LUT image.
+
+
+#### Returns: [Sprite] - The LUT sprite.
+
+### Example:
+```gml
+var _sprite = ppfx_id.GetBakedLUT();
+sprite_save(_sprite, 0, "LUT.png");
+```
+In the example above, we get the LUT sprite and save it to disk.
+
+<br><br><br>
+
+
+
+
+
+## ppfx_system_exists()
+
+```gml
+ppfx_system_exists(pp_index);
+```
+Check if post-processing system exists.
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| pp_index | Struct | The returned variable by "new PPFX_System()". |  
+
+#### Returns: [Bool] - If system exists or not.
+
+### Example:
+```gml
+if (ppfx_system_exists(ppfx_id)) {
+    // do something
+}
+```
+<br><br><br>
+
+
+
+
+
+
+
+# PPFX_Profile()
+
+The profile is like a container, which contains the effects you want the system to render. They alone don't do anything, it's just a data structure. You load them into the post-processing system. Each post-processing system can only have 1 profile loaded into it, at the same time (you can also merge profiles). You can have infinite profiles with the combinations you want, in any order.
+
+The profile name can be anything you like. This is just for debugging purposes.
+
+If for example the game Menu has different effects than Level 1, you will create a different profile for both, and then load them properly.
+
+> If you are using effects in fullscreen, we recommend using just one PPFX system and multiple profiles, for better flexibility. (You can use as many as you like too).
+
+```gml
+PPFX_Profile(name, effects_array);
+```
+Creates a profile with predefined effects.
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
 | name | String | Profile name. It only serves as a cosmetic and nothing else. |  
 | effects_array | Array | Array with all effects structs. |  
 
-
 #### Returns: [Struct] - Profile id
 
 ### Example:
 ```gml
 var effects = [
-    new pp_sine_wave(true, 1),
+    new FX_SineWave(true),
 ];
-main_profile = ppfx_profile_create("Main", effects);
+main_profile = new PPFX_Profile("Main", effects);
 ```
 The code above creates a profile and associates its id with main_profile.
 
@@ -423,270 +688,142 @@ The code above creates a profile and associates its id with main_profile.
 
 
 
-## ppfx_profile_load()
+
+
+## .SetName()
 
 ```gml
-ppfx_profile_load(pp_index, profile_index);
+.SetName(name);
 ```
-This function loads a previously created profile.
-Which means that the post-processing system will apply the settings of the effects contained in the profile, showing them consequently.
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
-| profile_index | Struct | Profile id created with ppfx_profile_create(). |  
-
-
-#### Returns: [Undefined] - N/A
-
-### Example:
-```gml
-main_profile = ppfx_profile_create("Main", effects);
-
-ppfx_profile_load(ppfx_id, main_profile);
-```
-The code above creates a profile and loads it into the ppfx_id id system.
-
-<br><br><br>
-
-
-
-## ppfx_profile_set_name()
-
-```gml
-ppfx_profile_set_name(profile_index);
-```
-Set the name of the profile, created with ppfx_profile_create().
+Set the name of the profile, created with "new PPFX_Profile()".
 This feature is just cosmetic and nothing more.
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| profile_index | Struct | Profile id created with ppfx_profile_create(). |  
 | name | String | New profile name. |  
-
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_profile_set_name(ppfx_id, "Menu");
+profile.SetName("Menu");
 ```
 
 <br><br><br>
 
 
 
-## ppfx_profile_get_name()
+
+
+## .GetName()
 
 ```gml
-ppfx_profile_get_name(profile_index);
+GetName();
 ```
-Get the name of the profile, created with ppfx_profile_create().
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| profile_index | Struct | Profile id created with ppfx_profile_create(). |  
-
+Get the name of the profile, created with "new PPFX_Profile()".
 
 #### Returns: [String] - Profile name
 
 ### Example:
 ```gml
-var _name = ppfx_profile_get_name(ppfx_id);
+var _name = profile.GetName();
 ```
+In the example above, we returned the name of the profile. Example: "Menu".
 
 <br><br><br><br>
 
 
 
 
-# Effects
 
-> The following functions control the behavior of effects.  
-Important: Note that you can only disable or enable effects that are in the system (which have been loaded from a profile).
-
-## ppfx_effect_set_enable()
+## .Stringify()
 
 ```gml
-ppfx_effect_set_enable(pp_index, effect_index, enable);
+.Stringify(round_numbers, enabled_only);
 ```
-This function toggles the effect rendering.
+This function parses and exports the profile in GML, for easy use.
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
-| effect_index | Real | Effect index. Use the enumerator, example: PP_EFFECT.BLOOM. |  
-| enable | Bool | Will be either true (enabled) or false (disabled). The rendering will toggle if nothing or -1 is entered. |  
-
-
+| round_numbers | Bool | Sets whether to round numbers (removing decimals). |  
+| enabled_only | Bool | Defines if will export only enabled effects. |  
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_effect_set_enable(pp_index, PP_EFFECT.BLOOM, false);
+var _text = main_profile.Stringify(false, true);
+clipboard_set_text(_text);
 ```
-In the example above, Bloom's effect is disabled.
+In the example above, we get the code in GML with all the parameters of the effects.
+Something like this:
+```
+game_profile = new PPFX_Profile("Game", [
+	new FX_Rotation(true, 10),
+]);
+```
+> Please note: there are some things that cannot be exported, such as textures, as you will have to define your own. So "undefined" will be used instead.
 
 <br><br><br>
 
 
 
-## ppfx_effect_set_parameter()
-
-```gml
-ppfx_effect_set_parameter(pp_index, effect_index, param, value);
-```
-Modify a single parameter (setting) of an effect.
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
-| effect_index | Enum | Effect index. Use the enumerator, example: PP_EFFECT.BLOOM. |  
-| param | String | Parameter macro. Example: PP_BLOOM_COLOR. |  
-| value | Any | Parameter value. Example: make_color_rgb_ppfx(255, 255, 255). |  
 
 
-#### Returns: [Undefined] - N/A
+# PPFX_LayerRenderer()
+
+The Layer Renderer is responsible for using a post-processing system as a bridge to draw it in one or more layers (range).
+
+> This system uses layer scripts internally, so please note that GameMaker is only able to use one script per layer. If you use another script on the layer, it will be replaced by the one in the layer renderer.
+
+#### Returns: [Struct] - Layer Renderer id.
 
 ### Example:
 ```gml
-ppfx_effect_set_parameter(ppfx_id, PP_EFFECT.ZOOM, PP_ZOOM_AMOUNT, 1.4);
+// Range 1 (use effects for "Background_Mid_1" and "Background_Mid_0")
+layer_index = new PPFX_LayerRenderer();
+layer_index.Apply(ppfx_test_id, layer_get_id("Background_Mid_1"), layer_get_id("Background_Mid_0"));
+
+// Range 2 (use effects for "Background_0" layer only)
+layer_index2 = new PPFX_LayerRenderer();
+layer_index2.Apply(ppfx_test2_id, layer_get_id("Background_0"), layer_get_id("Background_0")); 
 ```
-In the example above, we are modifying the zoom amount to 1.4, using PP_ZOOM_AMOUNT.  
+
+In the example above, we created two layer renders, and associated each one with its system (ppfx_test_id and layer_index2).
+
+> PLEASE NOTE: You need to create their own system for each Renderer. NEVER use the same ppfx system, this includes the same ppfx system used for FULLSCREEN.
+
 
 <br><br><br>
 
 
 
-## ppfx_effect_set_parameters()
+
+
+## .Destroy()
 
 ```gml
-ppfx_effect_set_parameters(pp_index, effect_index, params_array, values_array);
-```
-Modify various parameters (settings) of an effect.
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
-| effect_index | Enum | Effect index. Use the enumerator, example: PP_EFFECT.BLOOM. |  
-| params_array | Array | Array with the effect parameters. Use the pre-defined macros, for example: PP_BLOOM_COLOR. |  
-| values_array | Array | Array with parameter values, must be in the same order. |  
-
-
-#### Returns: [Undefined] - N/A
-
-### Example:
-```gml
-ppfx_effect_set_parameters(ppfx_id, PP_EFFECT.BLOOM, [PP_BLOOM_INTENSITY, PP_BLOOM_THRESHOLD], [3, 0.7]);
-```
-In the example above, we set the intensity and threshold to 3 and 0.7 respectively.
-
-<br><br><br>
-
-
-
-## ppfx_effect_get_parameter()
-
-```gml
-ppfx_effect_get_parameter(pp_index, effect_index, param, value);
-```
-Get a single parameter (setting) value of an effect.
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
-| effect_index | Enum | Effect index. Use the enumerator, example: PP_EFFECT.BLOOM. |  
-| param | String | Parameter macro. Example: PP_BLOOM_COLOR. |  
-
-
-#### Returns: [Any] - Returned value
-
-### Example:
-```gml
-var _value = ppfx_effect_get_parameter(ppfx_id, PP_EFFECT.BLOOM, PP_BLOOM_INTENSITY);
-```
-In the example above, I get the intensity value from Bloom.
-
-<br><br><br>
-
-
-
-## ppfx_effect_is_enabled()
-
-```gml
-ppfx_effect_is_enabled(pp_index, effect_index);
-```
-Returns true if effect rendering is enabled, and false if not.
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
-| effect_index | Enum | Effect index. Use the enumerator, example: PP_EFFECT.BLOOM. |  
-
-
-#### Returns: [Bool] - If is enabled
-
-### Example:
-```gml
-var _is_bloom_enabled = ppfx_effect_is_enabled(ppfx_id, PP_EFFECT.BLOOM);
-```
-
-<br><br><br><br>
-
-
-
-
-# Layers
-
-> Layers
-
-## ppfx_layer_create()
-
-```gml
-ppfx_layer_create();
-```
-Create post-processing layer id to be used by the other functions.
-
-
-#### Returns: [Undefined] - N/A
-
-### Example:
-```gml
-layer_index = ppfx_layer_create();
-```
-
-<br><br><br>
-
-
-
-## ppfx_layer_destroy()
-
-```gml
-ppfx_layer_destroy(pp_layer_index);
+.Destroy();
 ```
 This function deletes a previously created post-processing layer, freeing memory.
 
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_layer_index | Struct | The returned variable by ppfx_layer_create() |  
-
-
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-ppfx_layer_destroy(layer_index);
+layer_index.Destroy();
 ```
 
 <br><br><br>
 
 
 
-## ppfx_layer_apply()
+
+
+## .Apply()
 
 ```gml
-ppfx_layer_apply(pp_index, pp_layer_index, top_layer_id, bottom_layer_id, room_size_based, draw_layer);
+.Apply(pp_index, top_layer_id, bottom_layer_id, draw_layer);
 ```
 This function applies post-processing to one or more layers. You only need to call this ONCE in an object's Create Event (or Room Start).  
 Make sure the top layer is above the bottom layer in order. If not, it may not render correctly.  
@@ -694,75 +831,53 @@ Please note: You CANNOT select a range to which the layer has already been in ra
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| pp_index | Struct | The returned variable by ppfx_create(). |  
-| pp_layer_index | Struct | The returned variable by ppfx_layer_create() |  
-| top_layer_id | Layer ID | Effect index. The top layer, in the room editor. |  
-| bottom_layer_id | Layer ID | Effect index. Use the enumerator, example: PP_EFFECT.BLOOM. |  
-| room_size_based | Bool | room_size_based If true, the system will use room size to render effects (requires more GPU resources). While off, uses camera position and size. |  
+| pp_index | Struct | The returned variable by "new PPFX_System()". |  
+| top_layer_id | Layer ID | The top layer, in the room editor. For example: layer_get_id("Top_Layer") |  
+| bottom_layer_id | Layer ID | The bottom layer, in the room editor. For example: layer_get_id("Bottom_Layer") |  
 | draw_layer | Bool | If false, the layer will not draw and the layer content will still be rendered to the surface. |  
-
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-layer_effects = ppfx_create();
-var _profile = ppfx_profile_create("Cool Effect", [
-	new pp_colorize(true, make_color_rgb(200, 34, 60)),
+// Create a ppfx System for the Layer Renderer.
+ppfx_blur = new PPFX_System();
+var _profile = new PPFX_Layer("Blur", [
+	new FX_KawaseBlur(true),
 ]);
-ppfx_profile_load(layer_effects, _profile);
+ppfx_blur.LoadProfile(_profile);
 
-layer_index = ppfx_layer_create();
-ppfx_layer_apply(layer_effects, layer_index, layer_get_id("Background_0"), layer_get_id("Background_0"), false); 
+// Create Layer Renderer and use ppfx system to render effects to the layer.
+layer_index = new PPFX_LayerRenderer();
+layer_index.Apply(ppfx_blur, layer_get_id("Background_0"), layer_get_id("Background_0")); 
 ```
-In the example above, a profile is created with a colorize effect, then it is associated with a layer, applying the effects in a range.
+In the example above, a profile is created with a blur effect, then it is associated with a layer, applying the effects in a range.
 
 <br><br><br>
 
 
 
-## ppfx_layer_exists()
+
+
+
+
+## .GetSurface()
 
 ```gml
-ppfx_layer_exists(profile_index);
-```
-Checks if a previously created post-processing layer exists.
-
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| pp_layer_index | Struct | The returned variable by ppfx_layer_create() |  
-
-
-#### Returns: [Bool] - N/A
-
-### Example:
-```gml
-ppfx_layer_destroy(layer_index);
-```
-
-<br><br><br>
-
-
-
-## ppfx_layer_get_surface()
-
-```gml
-ppfx_layer_get_surface(pp_layer_index, with_effects);
+.GetSurface(with_effects);
 ```
 This function gets the final surface used in the PPFX layer system.
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| pp_layer_index | Struct | The returned variable by ppfx_layer_create(). |  
 | with_effects | Bool | If true, it will return the surface of the layer with the effects applied. False is without the effects. |  
-
 
 #### Returns: [Surface] - Surface id
 
 ### Example:
 ```gml
 if keyboard_check_pressed(vk_space) {
-	var _surface = ppfx_layer_get_surface(layer_index, true);
+	var _surface = layer_renderer.GetSurface(layer_index, true);
 	surface_save(_surface, "layer_surface.png");
 }
 ```
@@ -770,12 +885,128 @@ In the example above, the layer content is captured to a .png image file, when p
 
 <br><br><br>
 
-## ppfx_layer_is_ready()
 
-## ppfx_layer_set_range()
 
-## ppfx_layer_set_render_enable()
 
+
+## .IsRenderEnabled()
+
+```gml
+.IsRenderEnabled();
+```
+This function checks if the layer renderer is rendering.
+
+#### Returns: [Bool] - true: is enabled. false: not enabled.
+
+### Example:
+```gml
+var _rendering = layer_renderer.IsRenderEnabled();
+```
+In the example above, I return in a variable if the layer renderer is rendering.
+
+<br><br><br>
+
+
+
+
+
+## .IsReady()
+
+```gml
+.IsReady();
+```
+This function checks if the layer renderer is ready, which means that internally the system was created, as well as the surfaces, and it is possible to obtain its surface safely.
+
+#### Returns: [Bool] - true: is enabled. false: not enabled.
+
+### Example:
+```gml
+var _rendering = layer_renderer.IsReady();
+```
+In the example above, we return in a variable if the layer renderer is ready.
+
+<br><br><br>
+
+
+
+
+
+## .SetRange()
+
+```gml
+.SetRange(top_layer_id, bottom_layer_id);
+```
+This function defines a new range of layers from an existing Layer Renderer.
+
+> When changing the range, the old layer scripts of the layers are reset.
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| top_layer_id | Layer Id | The top layer, in the room editor. |  
+| bottom_layer_id | Layer Id | The bottom layer, in the room editor. |  
+
+#### Returns: [Surface] - Surface id
+
+### Example:
+```gml
+layer_renderer.SetRange(layer_get_id("Background_Far_1"), layer_get_id("Background_Far_0"));
+```
+In the example above, we changed the Layer Renderer range to a new range of layers.
+
+<br><br><br>
+
+
+
+
+
+## .SetRenderEnable()
+
+```gml
+.SetRenderEnable(enable);
+```
+Toggle whether layer renderer can render on layer.
+If disabled, nothing will be rendered to the surface. That is, the layer will be drawn without the effects. Disabling this releases the system usage on the GPU.  
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| enable | Bool/Real | Will be either true (enabled, the default value) or false (disabled). The drawing will toggle if nothing or -1 is entered. |  
+
+#### Returns: [Undefined] - N/A
+
+### Example:
+```gml
+ppfx_id.SetRenderEnable(false);
+```
+In the example above, we disable system rendering.
+
+<br><br><br>
+
+
+
+
+
+## ppfx_layer_renderer_exists()
+
+```gml
+ppfx_layer_renderer_exists(layer_renderer);
+```
+Checks if a previously created post-processing layer exists.
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| pp_layer_index | Struct | The returned variable by "new PPFX_LayerRenderer()". |  
+
+#### Returns: [Bool] - N/A
+
+### Example:
+```gml
+if (ppfx_layer_renderer_exists(layer_renderer)) {
+	// do something
+}
+```
+In the example above, we check if the layer renderer exists and run some code later.
+
+<br><br><br>
 
 
 
@@ -783,37 +1014,117 @@ In the example above, the layer content is captured to a .png image file, when p
 
 # Areas
 
-> Areas
+Area masks are areas of the screen on which you can draw only part of the post-processing. You can use sprites to crop the image, creating cool effects.
 
 ## area_draw_rect()
 
+Draw part of the post-processing system surface in a rectangular area.
+
+```gml
+area_draw_rect(x, y, w, h, x_offset, y_offset, pp_index)
+```
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| x | Real | The x coordinate of where to draw the sprite. |  
+| y | Real | The y coordinate of where to draw the sprite. |  
+| w | Real | The width of the area. |  
+| h | Real | The height of the area. |  
+| x_offset | Real | Defined by position X, minus this offset variable. Use 0 in the GUI dimension. |  
+| y_offset | Real | Defined by position Y, minus this offset variable. Use 0 in the GUI dimension. |  
+| pp_index | Struct | The returned variable by PPFX_System(). |  
+
+<br><br><br>
+
+
+
 ## area_draw_sprite_mask()
+
+Draw a normal sprite, but its texture is the post-processing texture.
+
+```gml
+area_draw_sprite_mask(sprite_mask, subimg, x, y, pp_index)
+```
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| sprite_mask | Sprite | The sprite index to be used as a mask. It can be any color. It will only be used to "cut" the surface. |  
+| subimg | Real | The subimg (frame) of the sprite to draw (image_index or -1 correlate to the current frame of animation in the object). |  
+| x | Real | The x coordinate of where to draw the sprite. |  
+| y | Real | The y coordinate of where to draw the sprite. |  
+| pp_index | Struct | The returned variable by PPFX_System(). |  
+
+<br><br><br>
+
+
 
 ## area_draw_sprite_ext_mask()
 
+Draw a normal sprite extended, but its texture is the post-processing texture.
+
+```gml
+area_draw_sprite_ext_mask(sprite_mask, subimg, x, y, xscale, yscale, rot, color, alpha, pp_index)
+```
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| sprite_mask | Sprite | The sprite index to be used as a mask. It can be any color. It will only be used to "cut" the surface. |  
+| subimg | Real | The subimg (frame) of the sprite to draw (image_index or -1 correlate to the current frame of animation in the object). |  
+| x | Real | The x coordinate of where to draw the sprite. |  
+| y | Real | The y coordinate of where to draw the sprite. |  
+| xscale | Real | The horizontal scaling of the sprite, as a multiplier: 1 = normal scaling, 0.5 is half etc... |  
+| yscale | Real | The vertical scaling of the sprite as a multiplier: 1 = normal scaling, 0.5 is half etc... |  
+| rot | Real | The rotation of the sprite. 0=right way up, 90=rotated 90 degrees counter-clockwise etc... |  
+| color | Real | The color of the sprite. |  
+| alpha | Real | The alpha of the sprite. |  
+| pp_index | Struct | The returned variable by PPFX_System(). |  
+
+<br><br><br>
+
+
+
 ## area_draw_sprite_stretched_mask()
+
+Draw a normal sprite stretched, but its texture is the post-processing texture.
+
+```gml
+area_draw_sprite_stretched_mask(sprite_mask, subimg, x, y, w, h, pp_index)
+```
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| sprite_mask | Real | The sprite index to be used as a mask. It can be any color. It will only be used to "cut" the surface. |  
+| subimg | Real | The y coordinate of where to draw the sprite. |  
+| x | Real | The x coordinate of where to draw the sprite. |  
+| y | Real | The y coordinate of where to draw the sprite. |  
+| w | Real | The width of the sprite. |  
+| h | Real | The height of the sprite. |  
+| pp_index | Struct | The returned variable by PPFX_System(). |  
+
+<br><br><br>
+
+
 
 ## area_draw_sprite_stretched_ext_mask()
 
+Draw a normal sprite stretched extended, but its texture is the post-processing texture.
+
+```gml
+area_draw_sprite_stretched_ext_mask(sprite_mask, subimg, x, y, w, h, color, alpha, pp_index)
+```
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| sprite_mask | Real | The sprite index to be used as a mask. It can be any color. It will only be used to "cut" the surface. |  
+| subimg | Real | The y coordinate of where to draw the sprite. |  
+| x | Real | The x coordinate of where to draw the sprite. |  
+| y | Real | The y coordinate of where to draw the sprite. |  
+| x | Real | The width of the sprite. |  
+| x | Real | The height of the sprite. |  
+| color | Real | The color of the sprite. |  
+| alpha | Real | The alpha of the sprite. |  
+
+<br><br><br>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-abbbbbbbbbbbbbbb
-
-
-
-
-
+Give me a cookie :)
