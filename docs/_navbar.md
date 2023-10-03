@@ -6,6 +6,7 @@
   * [Cover page](cover.md)
 
 * Configuration
+
   * [Configuration](configuration.md)
   * [Themes](themes.md)
   * [Using plugins](plugins.md)

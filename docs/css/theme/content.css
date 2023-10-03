@@ -1,10 +1,10 @@
 /* Content
 ============================================================================= */
 :root {
-    --content-max-width                 : 55em;
+    /*--content-max-width                 : 55em;*/
 
     /* Blockquote */
-    --blockquote-background             : var(--mono-tint3);
+    /*--blockquote-background             : var(--mono-tint3);
     --blockquote-border-color           : ;
     --blockquote-border-style           : solid;
     --blockquote-border-width           : ;
@@ -23,10 +23,10 @@
     --blockquote-quotes-font-family     : ;
     --blockquote-quotes-font-size       : ;
     --blockquote-quotes-open            : ;
-    --blockquote-padding                : 1.5em;
+    --blockquote-padding                : 1.5em;*/
 
     /* Code */
-    --code-font-family                  : Inconsolata, Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+    /*--code-font-family                  : Inconsolata, Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
     --code-font-size                    : calc(var(--font-size-m) * 0.95);
     --code-font-weight                  : normal;
     --code-tab-size                     : 4;
@@ -52,15 +52,15 @@
     --code-theme-selector               : ;
     --code-theme-tag                    : ;
     --code-theme-text                   : ;
-    --code-theme-variable               : ;
+    --code-theme-variable               : ;*/
 
     /* Headings */
-    --heading-color                     : var(--mono-shade3);
+    /*--heading-color                     : var(--mono-shade3);
     --heading-font-family               : ;
     --heading-font-weight               : ;
     --heading-margin                    : 2.5rem 0 0;
-    --heading-padding                   : ;
-    --heading-h1-border-color           : ;
+    --heading-padding                   : ;*/
+    /*--heading-h1-border-color           : ;
     --heading-h1-border-style           : solid;
     --heading-h1-border-width           : ;
     --heading-h1-color                  : ;
@@ -68,17 +68,19 @@
     --heading-h1-font-size              : var(--font-size-xxl);
     --heading-h1-font-weight            : ;
     --heading-h1-margin                 : ;
-    --heading-h1-padding                : ;
-    --heading-h2-border-color           : ;
-    --heading-h2-border-style           : solid;
-    --heading-h2-border-width           : ;
-    --heading-h2-color                  : ;
+    --heading-h1-padding                : ;*/
+    
+    --heading-h2-border-color           : var(--theme-color);
+    /*--heading-h2-border-style           : ;
+    --heading-h2-border-width           : ;*/
+    --heading-h2-color                  : var(--theme-color);
     --heading-h2-font-family            : ;
     --heading-h2-font-size              : var(--font-size-xl);
-    --heading-h2-font-weight            : ;
+    --heading-h2-font-weight            : bold;
     --heading-h2-margin                 : ;
     --heading-h2-padding                : ;
-    --heading-h3-border-color           : ;
+    
+    /*--heading-h3-border-color           : ;
     --heading-h3-border-style           : solid;
     --heading-h3-border-width           : ;
     --heading-h3-color                  : ;
@@ -95,9 +97,9 @@
     --heading-h4-font-size              : var(--font-size-m);
     --heading-h4-font-weight            : ;
     --heading-h4-margin                 : ;
-    --heading-h4-padding                : ;
+    --heading-h4-padding                : ;*/
 
-    --heading-h5-border-color           : ;
+    /*--heading-h5-border-color           : ;
     --heading-h5-border-style           : solid;
     --heading-h5-border-width           : ;
     --heading-h5-color                  : ;
@@ -115,30 +117,30 @@
     --heading-h6-font-size              : var(--font-size-xs);
     --heading-h6-font-weight            : ;
     --heading-h6-margin                 : ;
-    --heading-h6-padding                : ;
+    --heading-h6-padding                : ;*/
 
     /* Keyboard */
-    --kbd-background                    : var(--mono-tint3);
+    /*--kbd-background                    : var(--mono-tint3);
     --kbd-border                        : ;
     --kbd-border-radius                 : var(--border-radius-m);
     --kbd-color                         : ;
     --kbd-font-size                     : ;
     --kbd-margin                        : 0 0.3em;
     --kbd-min-width                     : 2.5em;
-    --kbd-padding                       : 0.65em 0.5em;
+    --kbd-padding                       : 0.65em 0.5em;*/
 
     /* Links */
-    --link-border-bottom                : ;
+    /*--link-border-bottom                : ;
     --link-border-bottom--hover         : ;
     --link-color                        : ;
     --link-color--hover                 : ;
     --link-text-decoration              : underline;
     --link-text-decoration--hover       : ;
     --link-text-decoration-color        : ;
-    --link-text-decoration-color--hover : ;
+    --link-text-decoration-color--hover : ;*/
 
     /* Notice */
-    --notice-background                 : var(--mono-tint3);
+    /*--notice-background                 : var(--mono-tint3);
     --notice-border-color               : ;
     --notice-border-radius              : var(--border-radius-m);
     --notice-border-style               : solid;
@@ -146,10 +148,10 @@
     --notice-color                      : ;
     --notice-font-family                : ;
     --notice-font-weight                : normal;
-    --notice-padding                    : 1em 1.5em;
+    --notice-padding                    : 1em 1.5em;*/
 
     /* Notice - Pseudo */
-    --notice-before-background          : ;
+    /*--notice-before-background          : ;
     --notice-before-border-radius       : ;
     --notice-before-color               : ;
     --notice-before-content             : ;
@@ -163,34 +165,34 @@
     --notice-before-padding             : ;
     --notice-before-position            : ;
     --notice-before-top                 : ;
-    --notice-before-width               : ;
+    --notice-before-width               : ;*/
 
     /* Notice - Important */
-    --notice-important-background       : ;
+    /*--notice-important-background       : ;
     --notice-important-border-color     : ;
     --notice-important-border-style     : ;
     --notice-important-border-width     : ;
-    --notice-important-color            : ;
+    --notice-important-color            : ;*/
 
     /* Notice - Important Pseudo */
-    --notice-important-before-background: ;
+    /*--notice-important-before-background: ;
     --notice-important-before-color     : ;
-    --notice-important-before-content   : ;
+    --notice-important-before-content   : ;*/
 
     /* Notice - Tip */
-    --notice-tip-background             : ;
+    /*--notice-tip-background             : ;
     --notice-tip-border-color           : ;
     --notice-tip-border-style           : ;
     --notice-tip-border-width           : ;
-    --notice-tip-color                  : ;
+    --notice-tip-color                  : ;*/
 
     /* Notice - Tip Pseudo */
-    --notice-tip-before-background      : ;
+    /*--notice-tip-before-background      : ;
     --notice-tip-before-color           : ;
-    --notice-tip-before-content         : ;
+    --notice-tip-before-content         : ;*/
 
     /* Tables */
-    --table-body-border-color           : ;
+    /*--table-body-border-color           : ;
     --table-body-border-width           : ;
     --table-cell-border-color           : ;
     --table-cell-border-width           : ;
@@ -200,5 +202,5 @@
     --table-head-border-width           : ;
     --table-head-font-weight            : var(--strong-font-weight);
     --table-row-even-background         : ;
-    --table-row-odd-background          : var(--mono-tint3);
+    --table-row-odd-background          : var(--mono-tint3);*/
 }

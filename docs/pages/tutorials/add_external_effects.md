@@ -1,5 +1,5 @@
 
-## Adding Custom Effects <!-- {docsify-ignore} -->
+## Adding External Effects <!-- {docsify-ignore} -->
 
 Post-Processing FX allows you to add external effects (add-ons) that you can create and use yourself, or use what we produce.
 
@@ -45,7 +45,7 @@ Example:
 ```gml
 FX_EFFECT_EXT.SKETCH
 ```
-Note that the effect name is everything that comes after "FX_". So: `FX_Sketch` > `Sketch`
+Note that the effect name is everything that comes after "FX_". So: `FX_Sketch` > `Sketch`. Additionally, all letters become capital letters: `SKETCH`.
 
 2 - The parameters accompany the effect, and you can use them normally. Example: `PP_SKETCH_WHITE_AMOUNT`
 

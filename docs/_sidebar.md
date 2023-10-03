@@ -1,5 +1,5 @@
-- Post-Processing FX v4.0+
-<br /><br />
+<b>Post-Processing FX v4.0+</b>
+<br/><br/>
 ----
 
 * [Home](/ "Post-Processing FX")
@@ -7,28 +7,31 @@
 * [Installation](./pages/installation.md "Installation")
 * [Getting Started](./pages/quick-start.md "Getting Started")
 
-<br />
+<br/>
 
 ----
-- Scripting
+
+<b>Scripting</b>
 
 * [Controlling effects using code](./pages/scripting/effects_customize.md)
 * [Modules & Functions](./pages/scripting/functions_list.md)
 * [Effects Enum](./pages/scripting/effects_enum.md "List of effects enumerator")
 * [Effects Parameters](./pages/scripting/param_list.md "Effect parameters list")
 
-<br />
+<br/>
 
 ----
-- Technical
+
+<b>Technical</b>
 
 * [Effects Info](./pages/technical/effects_info.md)
 * [Effects Drawing Order](./pages/technical/effects_draw_order.md "Effects drawing order")
 
-<br />
+<br/>
 
 ----
-- Tutorials
+
+<b>Tutorials</b>
 
 * [Updating PPFX](./pages/tutorials/updating_ppfx.md "Updating Post-Processing FX")
 * [Debugging](./pages/tutorials/debugging.md "Debugging Post-Processing FX")
@@ -38,15 +41,14 @@
 * [Adding External Effects](./pages/tutorials/add_external_effects.md "Adding custom effects to the stack")
 * [Creating Your Own Effect](./pages/tutorials/creating_your_effect.md "Creating your own effect")
 
-<br />
+<br/>
 
 ----
-- Others
+
+<b>Others</b>
 
 * [License](./pages/others/license.md "End User License Agreement")
 * [Credits](./pages/others/credits.md)
 
-<br />
-
-
+<br/>
 

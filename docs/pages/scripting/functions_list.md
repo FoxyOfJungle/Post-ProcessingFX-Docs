@@ -25,7 +25,7 @@ Examples:
 
 > By instantiating the system with "new" operator, you will get a struct, in which you will be able to control the system with the methods below.
 
-
+> Systems need to be destroyed using .Destroy() when no longer used, to avoid memory leaks.
 
 
 ## .ProfileLoad()
@@ -360,8 +360,6 @@ In the example above, the global system strength ppfx_id is set to 0.5.
 
 
 
-
-
 ## .SetRenderResolution()
 
 ```gml
@@ -662,6 +660,8 @@ The profile name can be anything you like. This is just for debugging purposes.
 If for example the game Menu has different effects than Level 1, you will create a different profile for both, and then load them properly.
 
 > If you are using effects in fullscreen, we recommend using just one PPFX system and multiple profiles, for better flexibility. (You can use as many as you like too).
+
+> Profiles do not need to be destroyed, as they are structs.
 
 ```gml
 PPFX_Profile(name, effects_array);

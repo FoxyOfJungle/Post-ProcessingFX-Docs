@@ -38,7 +38,7 @@ application_surface_draw_enable(false);
 
 ## Creating a PPFX system <!-- {docsify-ignore} -->
 
-A system is an instance of the post-processing constructor object. In other words, it is a struct that is created, which contains the important internal variables for the effects to work. As Post-Processing FX is modular, it allows you to create multiple systems.  
+The system is responsible for rendering the effects somewhere (either full screen or in layers). It contains the important internal variables for the effects to work. As Post-Processing FX is modular, it allows you to create multiple systems.  
 
 We will use the system as a basis for the other post-processing functionality, including changing effects behaviours.
 

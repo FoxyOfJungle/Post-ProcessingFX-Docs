@@ -71,6 +71,8 @@ When using the PPFX_LayerRenderer() to draw effects, there are some limitations:
 
 2 - Using `surface_set_target()` is not supported in Draw event. If you really need this, use it in the Step event and just draw the surface in some Draw event.
 
+3 - Only works with 2D cameras. Cameras with perspective projection will not work correctly.
+
 ## Result <!-- {docsify-ignore} -->
 
 That's all, we have amazing effects just on the desired layers!

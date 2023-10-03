@@ -1,7 +1,7 @@
 /* Sidebar
 ============================================================================= */
 :root {
-    --sidebar-background                          : var(--base-background-color);
+    /*--sidebar-background                          : var(--base-background-color);*/
     --sidebar-border-color                        : ;
     --sidebar-border-width                        : 0;
     --sidebar-padding                             : 0 25px;
@@ -9,14 +9,14 @@
     --sidebar-width                               : 17rem;
 
     /* Name */
-    --sidebar-name-background                     : ;
+    /*--sidebar-name-background                     : ;
     --sidebar-name-color                          : ;
     --sidebar-name-font-family                    : ;
     --sidebar-name-font-size                      : var(--font-size-l);
     --sidebar-name-font-weight                    : normal;
     --sidebar-name-margin                         : 1.5rem 0 0;
     --sidebar-name-padding                        : ;
-    --sidebar-name-text-align                     : center;
+    --sidebar-name-text-align                     : center;*/
 
     /* Nav Headings */
     --sidebar-nav-strong-border-color             : var(--sidebar-border-color);
@@ -29,13 +29,13 @@
     --sidebar-nav-strong-text-transform           : ;
 
     /* Nav Container */
-    --sidebar-nav-background                      : ;
+    /*--sidebar-nav-background                      : ;
     --sidebar-nav-indent                          : 1em;
     --sidebar-nav-margin                          : 1.5rem 0 0;
-    --sidebar-nav-padding                         : ;
+    --sidebar-nav-padding                         : ;*/
 
     /* Nav Links */
-    --sidebar-nav-link-background                 : ;
+    /*--sidebar-nav-link-background                 : ;
     --sidebar-nav-link-background--active         : ;
     --sidebar-nav-link-background--hover          : ;
     --sidebar-nav-link-border-color               : ;
@@ -60,10 +60,10 @@
     --sidebar-nav-link-text-decoration--active    : underline;
     --sidebar-nav-link-text-decoration--hover     : underline;
     --sidebar-nav-link-text-decoration-color      : ;
-    --sidebar-nav-link-transition                 : ;
+    --sidebar-nav-link-transition                 : ;*/
 
     /* Nav Links - Pseudo Content */
-    --sidebar-nav-link-before-content             : ;
+    /*--sidebar-nav-link-before-content             : ;
     --sidebar-nav-link-before-content--active     : ;
     --sidebar-nav-link-before-content-l1          : ;
     --sidebar-nav-link-before-content-l1--active  : ;
@@ -72,10 +72,10 @@
     --sidebar-nav-link-before-content-l3          : ;
     --sidebar-nav-link-before-content-l3--active  : ;
     --sidebar-nav-link-before-content-l4          : ;
-    --sidebar-nav-link-before-content-l4--active  : ;
+    --sidebar-nav-link-before-content-l4--active  : ;*/
 
     /* Nav Links - Pseudo Style */
-    --sidebar-nav-link-before-color               : ;
+    /*--sidebar-nav-link-before-color               : ;
     --sidebar-nav-link-before-color--active       : ;
     --sidebar-nav-link-before-color-l1            : ;
     --sidebar-nav-link-before-color-l1--active    : ;
@@ -89,18 +89,18 @@
     --sidebar-nav-link-before-margin-l1           : ;
     --sidebar-nav-link-before-margin-l2           : ;
     --sidebar-nav-link-before-margin-l3           : ;
-    --sidebar-nav-link-before-margin-l4           : ;
+    --sidebar-nav-link-before-margin-l4           : ;*/
 
     /* Nav Page Links */
-    --sidebar-nav-pagelink-background             : ;
+    /*--sidebar-nav-pagelink-background             : ;
     --sidebar-nav-pagelink-background--active     : ;
     --sidebar-nav-pagelink-background--collapse   : ;
     --sidebar-nav-pagelink-background--loaded     : ;
     --sidebar-nav-pagelink-padding                : ;
     --sidebar-nav-pagelink-transition             : var(--sidebar-nav-link-transition);
-
+    */
     /* Toggle */
-    --sidebar-toggle-background                   : ;
+    /*--sidebar-toggle-background                   : ;
     --sidebar-toggle-border-color                 : ;
     --sidebar-toggle-border-radius                : var(--border-radius-s);
     --sidebar-toggle-border-style                 : solid;
@@ -112,5 +112,5 @@
     --sidebar-toggle-icon-width                   : 16px;
     --sidebar-toggle-offset-left                  : 0;
     --sidebar-toggle-offset-top                   : calc(35px - (var(--sidebar-toggle-height) / 2));
-    --sidebar-toggle-width                        : 44px;
+    --sidebar-toggle-width                        : 44px;*/
 }

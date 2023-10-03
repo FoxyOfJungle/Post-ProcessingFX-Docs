@@ -1,5 +1,5 @@
 
-## Tutorial <!-- {docsify-ignore} -->
+## Installation Tutorial <!-- {docsify-ignore} -->
 
 This quick guide will show you how to download and install Post-Processing FX in your project.
 
