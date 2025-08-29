@@ -18,7 +18,7 @@ Note that the PPFX_DebugUI constructor has as its first parameter the instance o
 
 You can directly access the post-processing renderer by referencing it:
 ```gml
-debug_ui = new PPFX_DebugUI(ppfx_id);
+debugUI = new PPFX_DebugUI(renderer);
 ```
 Otherwise, you will automatically go to the Class Selector screen, where the UI will automatically search for classes to be inspected in the current context (example, in the Create Event of `obj_post_processing`).
 
@@ -42,7 +42,7 @@ You can also use the following commands while hovering over this area:
 And then, draw the UI in Draw GUI (any) or Post-Draw:
 
 ```gml
-debug_ui.Draw();
+debugUI.Draw();
 ```
 
 > Note that when drawing in Draw GUI, it is possible to scale the size of the UI, whereas in Post-Draw, the UI uses a 1:1 scale of the window (useful for Pixel-Art games).

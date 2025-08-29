@@ -11,9 +11,9 @@ Remember: you are not obligated to update Post-Processing FX whenever there is a
 
 Always tell if something broke, after reading all the Release Notes and made some changes (if any) on your own and it still didn't work.
 
-### 2. Back up your settings
+### 2. Back up your PPFX settings
 
-If you have settings to save in the `__ppf_settings` script, copy it.
+If you have settings to save in the `__ppf_Settings` script, copy it.
 
 ### 3. Delete the folder completely
 
@@ -22,5 +22,9 @@ You need to destroy the entire PostProcessingFX folder to avoid any future error
 ### 4. Import the new version
 
 Import the new .yymps file.  
+
+### 5. Restore the PPFX settings
+
+Return the `__ppf_Settings` script settings back as they were. Pay attention if there are any new parameters.  
 
 You now have the updated Post-Processing FX version, with awesome new stuff :)

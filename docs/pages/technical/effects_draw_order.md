@@ -9,37 +9,40 @@ Following is the default order in which effects are drawn/applied to the image:
 Top = First | Bottom = Last
 
 ```gml
-* BASE (Rotation, Zoom, Lens Distortion, White Balance, etc),
-HQ4X,
-FXAA,
+* BASE (Rotation, Zoom, Shake, Lens Distortion, Pixelization, Swirl, Panorama, Interference, Shockwaves, DisplaceMaps),
 BLOOM,
-SLOW_MOTION,
 SUNSHAFTS,
+LONG_EXPOSURE,
+* COLOR_GRADING (White Balance, Exposure, Tone Mapping, Contrast, Brightness, Color Curves, LUT etc),
+PALETTE_SWAP,
 DEPTH_OF_FIELD,
 MOTION_BLUR,
 BLUR_RADIAL,
-* COLOR_GRADING (LUT, Color Curves, Contrast, Brightness, Hue Shift, etc),
 TEXTURE_OVERLAY,
-PALETTE_SWAP,
 BLUR_KAWASE,
 BLUR_GAUSSIAN,
+GLITCH,
 VHS,
+ASCII,
 CHROMATIC_ABERRATION,
-* FINAL (Mist, Speedlines, Dithering, Scanlines, Fade, etc),
+HQ4X,
+* FINAL (Mist, Speedlines, Dithering, Scanlines, Noise Grain, Fade, CinemaBars, Vignette, Border, etc),
+SHARPEN,
+FXAA,
 COMPARE,
 ```
 
 Something important to know: Effects are classified into two types:
 
 <ul class="a">
-    <li>Individual: These effects are independent and can have their order changed (ex: Bloom, DepthOfField, Blurs);</li>
+    <li>Individual: These effects are independent and can have their order changed (ex: Bloom, Depth Of Field, Blurs);</li>
     <li>Shared: These effects share the same stack and cannot have their >individual< order changed (ex: LUT, Hue Shift, Color Tint, Scanlines) .</li>
 </ul>
 
 
-Effects with `*` use a shared stack, which means that a single surface is used for all the effects. These effects have the same order and cannot be changed individually. This is done for performance.
+Effects with `*` use a shared stack, which means that a single surface is used for all the effects. These effects have the same order and cannot be changed individually. This is done for performance. The order applied is already what gives best results.  
 
-The other effects can have their order changed freely, with `.SetOrder(int_number)`.
+Individual effects can have their order changed freely, with `.SetOrder(intNumber)`.
 Example:
 ```gml
 new FX_DepthOfField(true).SetOrder(10),
@@ -50,7 +53,6 @@ Note that each enum value is an integer, so if you want to reorder the effects, 
 new FX_DepthOfField(true).SetOrder(PPFX_STACK.BASE-1),
 ```
 Therefore, the effect will be the first to be drawn before everyone else.
-
 
 > NOTE: It is extremely important to know that if the independent effects have the same orders, the post-processing system/renderer will NOT know how to define which will be rendered first, so the order will be random.
 

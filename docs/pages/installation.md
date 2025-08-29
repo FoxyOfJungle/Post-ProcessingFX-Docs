@@ -5,7 +5,7 @@ This quick guide will show you how to download and install Post-Processing FX in
 
 ### Download the purchased file from store.
 
-Log into your Itch.io or Marketplace account and download the files.
+Log into your Itch.io account and download the files in your library.
 
 ### If purchased from Itch.io:
 

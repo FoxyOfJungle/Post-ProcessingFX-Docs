@@ -1,45 +1,43 @@
 
 ## Creating Your Own Effects <!-- {docsify-ignore} -->
 
-Just like external effects, Post-Processing FX allows you to create your own effects and add them to the system for later use.
+Just like external effects, Post-Processing FX allows you to create your own effects and add them to the renderer for later use.  
 
-You only need a template, which is a constructor:
+Before creating an effect, consider whether you really need it, as PPFX already has several effects.  
+
+So, basically you only need a template, which is a constructor:
 
 ```gml
 /// @desc My custom effect.
-function FX_Effect(enabled, parameter1, parameter2) : __ppf_fx_super_class() constructor {
-    effect_name = "effect";
-	stack_order = -50; // the rendering order
+function FX_Effect(_enabled, _parameter1, _parameter2) : __PPF_FXSuperClass() constructor {
+    effectName = "effect"; // used to reference the effect
+	stackOrder = -50; // the rendering order
+    isExternalEffect = true;
 
     // parameters
-    settings = {
-		enabled : enabled,
-		parameter1 : parameter1,
-		parameter2 : parameter2,
-    };
+    enabled = _enabled;
+    parameter1 = _parameter1;
+    parameter2 = _parameter2;
 
     // shader uniforms
-    uni_parameter1 = shader_get_uniform(sh_effect, "u_parameter1");
-    uni_parameter2 = shader_get_uniform(sh_effect, "u_parameter2");
+    static u_parameter1 = shader_get_uniform(shEffect, "u_parameter1");
+    static u_parameter2 = shader_get_uniform(shEffect, "u_parameter2");
 
     // the drawing function
-    static Draw = function(renderer, surface_width, surface_height, time, global_intensity) {
-        if (!settings.enabled) exit;
-
-        // create stack surface
-		renderer.__create_stack_surface(surface_width, surface_height, effect_name);
-
+    static Draw = function(_renderer, _surfaceWidth, _surfaceHeight, _time) {
+        if (!enabled) exit;
+        
         // render
-		surface_set_target(renderer.__stack_surface[renderer.__stack_index]);
+		_renderer.__stackSetSurface(_surfaceWidth, _surfaceHeight, effectName);
 			draw_clear_alpha(c_black, 0);
 			gpu_push_state();
 			gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
 			
             // apply shader
-			shader_set(sh_effect);
-            shader_set_uniform_f(uni_parameter1, settings.parameter1);
-            shader_set_uniform_f(uni_parameter2, settings.parameter2);
-            draw_surface_stretched(renderer.__stack_surface[renderer.__stack_index-1], 0, 0, surface_width, surface_height);
+			shader_set(shEffect);
+            shader_set_uniform_f(u_parameter1, parameter1);
+            shader_set_uniform_f(u_parameter2, parameter2);
+            draw_surface_stretched(_renderer.__stackSurfaces[_renderer.__stackIndex-1], 0, 0, _surfaceWidth, _surfaceHeight);
 			shader_reset();
 			
 			gpu_pop_state();
@@ -55,7 +53,7 @@ function FX_Effect(enabled, parameter1, parameter2) : __ppf_fx_super_class() con
     static ExportData = function() {
 		return {
 			name : instanceof(self),
-			params : [settings.enabled, settings.parameter1, settings.parameter2],
+			params : [enabled, parameter1, parameter2],
 		};
 	}
 
@@ -71,9 +69,11 @@ function FX_Effect(enabled, parameter1, parameter2) : __ppf_fx_super_class() con
     }
 }
 ```
-The only mandatory function is Draw(), the others don't even need to exist (they are overriden).
+The only mandatory function is `Draw()`, the others don't even need to exist (they are overriden).
 
-> It is mandatory to inherit __ppf_fx_super_class.
+> You need to set `isExternalEffect` to `true`.
+
+> It is mandatory to inherit `__PPF_FXSuperClass`.
 
 > Note: it is not necessary to pre-multiply the alpha in the shader.
 
@@ -84,7 +84,7 @@ The only mandatory function is Draw(), the others don't even need to exist (they
 
 Note that some data types are treated differently, and these must be added to an array as follows:
 ```gml
-params : [settings.enabled, ["texture", settings.paper_tex], settings.value],
+params : [enabled, ["texture", paperTexture], value],
 ```
 The first value of the array is the `type`, and the second is the `data`.
 
@@ -94,7 +94,7 @@ Type list:
     <li>"vec2": An array of [x, y];</li>
     <li>"vec3" An array of [x, y, z];</li>
     <li>"color" A color array. The range is [1, 1, 1] -> white, which is like [255, 255, 255]; This will be interpreted by the shader;</li>
-    <li>"texture" A pointer indicating that the parameter is a texture, which will return undefined.</li>
+    <li>"texture" A pointer indicating that the parameter is a texture, which will return `undefined` (because textures can't be saved).</li>
 </ul>
 
 </br>
@@ -103,8 +103,8 @@ Type list:
 
 **It's optional**. It is used to create the UI where you can edit the parameters in real time. 
 
-You need to take a look at `__ppf_debug_ui` to know how the UI system works.
+You need to take a look at `__ppf_DebugUI` to know how the UI system works.
 
 </br>
 
-Then you can use the effect like any other.
+Then you can use the effect like any other. You can also base yourself on existing effects.

@@ -1,4 +1,4 @@
-<b>Post-Processing FX v4.0+</b>
+<b>Post-Processing FX v5.0+</b>
 <br/><br/>
 ----
 
@@ -15,8 +15,7 @@
 
 * [Controlling effects using code](./pages/scripting/effects_customize.md)
 * [Modules & Functions](./pages/scripting/functions_list.md)
-* [Effects Enum](./pages/scripting/effects_enum.md "List of effects enumerator")
-* [Effects Parameters](./pages/scripting/param_list.md "Effect parameters list")
+* [Effects Macros](./pages/scripting/effects_macros.md "List of effects names and parameters")
 
 <br/>
 
@@ -40,6 +39,7 @@
 * [Area Masks](./pages/tutorials/area_masks.md "Using area masks for UI")
 * [Adding External Effects](./pages/tutorials/add_external_effects.md "Adding custom effects to the stack")
 * [Creating Your Own Effect](./pages/tutorials/creating_your_effect.md "Creating your own effect")
+* [HDR and Bloom](./pages/tutorials/hdr_and_bloom.md "HDR and Bloom")
 
 <br/>
 

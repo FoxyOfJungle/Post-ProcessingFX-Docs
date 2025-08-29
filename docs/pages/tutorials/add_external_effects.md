@@ -10,42 +10,27 @@ Post-Processing FX allows you to add external effects (add-ons) that you can cre
 
 To be able to use the external effect, import the .yymps package into your game. Use the `Tools > Import Local Package` menu in GameMaker.
 
-### Import the Effect
 
-Now import the effect into Post-Processing FX so that it is recognized.
-All you need to do is:
+### Use it
 
-1 - Add the effect to external effects. To do this:  
-Press **CTRL + T** and search for `__ppf_effects`;
-
-![Layer Range](./images/AddingExternalEffect_0.png)
-
-2 - Press CTRL + M to close all code regions and locate the "Modding" region;
-
-3 - You will use the `__ppf_include_external_effects` function to include effects to PPFX.
-
-4 - Add the effect like this: `__ppf_include_external_effects([FX_Sketch])`;
-
-![Layer Range](./images/AddingExternalEffect_1.png)
-
-Note that external effects also appear in the Debug UI, under a tab called "External Effects":
-
-![Layer Range](./images/ExternalEffectsTab.png)
-
-
+Now just use the effect in the profile just like others:
+```gml
+profile = new PPFX_Profile("Game", [
+    new FX_Sketch(true),
+])
+```
 
 
 ### Technical details:
 
-With this, the effect will already be recognized by Post-Processing FX and you will be able to use it normally like any other effect.
-However, there are some important things to note:
+To reference the effect, it is through the `effectName` of the effect. It's the same to use the macro that starts with `FF_`.  
 
-1 - To refer to the effect, use `FX_EFFECT_EXT` instead of `FX_EFFECT`
-Example:
+And the parameters are the name of the variables that are defined in the effect.  
+
+The parameters accompany the effect, and you can use them normally. Example: `PP_SKETCH_WHITE_AMOUNT`  
+
+So:
+
 ```gml
-FX_EFFECT_EXT.SKETCH
+renderer.SetEffectParameter(FF_SKETCH, PP_SKETCH_WHITE_AMOUNT, 1);
 ```
-Note that the effect name is everything that comes after "FX_". So: `FX_Sketch` > `Sketch`. Additionally, all letters become capital letters: `SKETCH`.
-
-2 - The parameters accompany the effect, and you can use them normally. Example: `PP_SKETCH_WHITE_AMOUNT`
-

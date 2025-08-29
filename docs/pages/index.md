@@ -48,10 +48,12 @@ Post-Processing FX is a modern post-processing library, focused on performance q
     <li>All effects can work together or individuall. Saves GPU/CPU usage if the effect is not in use.</li>
 </ul>
 
+See more on Itch.io.
+
 ## FAQ
 
 ### What platforms does Post-Processing FX support?
-Everything. Post-processing has been carefully designed to be compatible with all platforms. Please note that there may be some unknown bugs (probably shader-related) on platforms that we don't test often, so always report bugs if you find one, so we can take a look. The project uses pure GML simple logic with no dependency, so it shouldn't be a problem.
+Everything, except HTML5 (v5.0+). Post-processing has been carefully designed to be compatible with most platforms. Please note that there may be some unknown bugs (probably shader-related) on platforms that we don't test often, so always report bugs if you find one, so we can take a look. The project uses pure GML simple logic with no dependency, so it shouldn't be a problem.
 
 
 ### Is it difficult to import into an existing project?
