@@ -1,6 +1,8 @@
 # Post-Processing FX Docs
 
-> An awesome documentation. Work in Progress.
+> This is the official documentation.
+
+https://kazangames.com/assets/ppfx/docs/
 
 # Dependencies
 
