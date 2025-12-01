@@ -3,13 +3,13 @@ This page contains information on system requirements and compatibility of the P
 
 ## Compatibility <!-- {docsify-ignore} -->
 
-Crystal is compatible with the following platforms currently supported by GameMaker:
+Post-Processing FX is compatible with the following platforms currently supported by GameMaker:  
 
 * Windows, Mac, Ubuntu, Android, iOS, WASM (GX.Games), Playstation 4 & 5, Xbox One, Xbox Series X | S and Nintendo Switch.
 
-It uses only native GML code, in addition to shaders, without using any extra dependencies.
+It uses only native GML code, in addition to shaders, without using any extra dependencies.  
 
-Post-Processing FX works in split-screen (in many screens as needed).
+Post-Processing FX works in split-screen (in many screens as needed) and with custom surfaces.  
 
 > We tried to support HTML5 up to version 4.0.3, but it is unsustainable now. I recommend using WASM (Web Assembly/GX.Games export) instead.
 

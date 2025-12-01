@@ -663,6 +663,54 @@ In the example above, we get the intensity of the Bloom effect.
 
 
 
+## .GetEffect()
+
+```gml
+.GetEffect(effect, param);
+```
+Get specific effect struct. With this, you can also access the effect variables directly.
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| effect | Macro(String) | Effect name. Use the macro starting with FF_, example: FF_BLOOM. Or, the effectName: "bloom".|  
+
+#### Returns: [Any] - Effect parameter value.
+
+### Example:
+```gml
+var _effectStruct = renderer.GetEffect(FF_BLOOM);
+```
+In the example above, we get the struct from the previously loaded Bloom effect.
+
+<br><br><br>
+
+
+
+
+## .GetEffectExists()
+
+```gml
+.GetEffectExists(effect);
+```
+Check if some effect exists in this renderer.
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| effect | Macro(String) | Effect name. Use the macro starting with FF_, example: FF_BLOOM. Or, the effectName: "bloom".|  
+
+#### Returns: [Any] - Effect parameter value.
+
+### Example:
+```gml
+var _effectStruct = renderer.GetEffect(FF_BLOOM);
+```
+In the example above, we get the struct from the previously loaded Bloom effect.
+
+<br><br><br>
+
+
+
+
 ## .GetRenderResolution()
 
 ```gml
