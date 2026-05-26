@@ -7,42 +7,31 @@ Post-Processing FX has a debug interface (UI), which is an editor that allows yo
 
 ### Creating Editor
 
-All you need to do is create the interface in Create Event:
+All you need to do is create the Debug UI in Create Event, or Room Start, for example:
 ```gml
-debug_ui = new PPFX_DebugUI();
+ppfx_debug_show(true, id);
 ```
 
-![Post-Processing FX](./images/DebugUI.png)
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| show | Bool | If true, the UI will be created. If false, the existing UI will be destroyed. |  
+| originInstance | Id.Instance | The origin instance to find Crystal constructors to inspect. Example: id, to find from self instance. |  
+| classInstance | Struct | The struct returned from a constructor/class. Let it blank/undefined if you want the Debug UI to search it for you, in the current object/context. | 
+| isOpened | Struct | If true, the UI starts opened. |  
+| startMaximized | Struct | Windows will appear maximized. Disable this if you want to set custom size and position. |  
+| width | Real | The start width of the Debug UI. |  
+| height | Real | The start height of the Debug UI. |  
+| x | Real | The start x of the Debug UI. |  
+| y | Real | The start y of the Debug UI. |  
 
-Note that the PPFX_DebugUI constructor has as its first parameter the instance of a PPFX class that you want to inspect.  
-
-You can directly access the post-processing renderer by referencing it:
+Note that the function has as a parameter, the instance of a PPFX class that you want to inspect. You can directly access the post-processing renderer by referencing it:
 ```gml
-debugUI = new PPFX_DebugUI(renderer);
+ppfx_debug_show(true, id, renderer);
 ```
-Otherwise, you will automatically go to the Class Selector screen, where the UI will automatically search for classes to be inspected in the current context (example, in the Create Event of `obj_post_processing`).
+Otherwise, you will automatically go to the "Class Selector" screen, where the UI will automatically search for classes to be inspected in the current context (example, in the Create Event of `objPostProcessing`).
 
 ![Post-Processing FX](./images/ClassSelector.png)
 
-An interesting feature of the debug UI is that you can click on the top corner whenever you want to return to this screen. 
-
-![Post-Processing FX](./images/ClassSelectorHomeButton.png)
-
-You can also use the following commands while hovering over this area:
-```
-> Left Mouse Button: Go to Class Selector screen;
-> Right Mouse Button: Move UI;
-> Right + Middle mouse button: Maximize UI (to the left or right);
-```
-
 </br>
 
-### Drawing Editor
-
-And then, draw the UI in Draw GUI (any) or Post-Draw:
-
-```gml
-debugUI.Draw();
-```
-
-> Note that when drawing in Draw GUI, it is possible to scale the size of the UI, whereas in Post-Draw, the UI uses a 1:1 scale of the window (useful for Pixel-Art games).
+Note that this UI is an object, but it only exists when you call the function to create the UI, like we did above. Otherwise, there is zero usage of game resources (CPU, GPU and RAM).

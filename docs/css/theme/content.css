@@ -192,15 +192,15 @@
     --notice-tip-before-content         : ;*/
 
     /* Tables */
-    /*--table-body-border-color           : ;
-    --table-body-border-width           : ;
-    --table-cell-border-color           : ;
-    --table-cell-border-width           : ;
-    --table-cell-padding                : 0.75em 0.5em;
-    --table-head-background             : ;
-    --table-head-border-color           : var(--table-cell-border-color);
-    --table-head-border-width           : ;
+    /*--table-body-border-color           : ;*/
+    /*--table-body-border-width           : 0.1em;*/
+    /*--table-cell-border-color           : RGB(10, 100, 100);*/
+    --table-cell-border-width           : 0.1em;
+    --table-cell-padding                : 0.1em 0.5em;
+    --table-head-background             : RGB(20, 5, 10);
+    /*--table-head-border-color           : var(--table-cell-border-color);*/
+    --table-head-border-width           : 0.1em;
     --table-head-font-weight            : var(--strong-font-weight);
-    --table-row-even-background         : ;
+    /*--table-row-even-background         : ;
     --table-row-odd-background          : var(--mono-tint3);*/
 }

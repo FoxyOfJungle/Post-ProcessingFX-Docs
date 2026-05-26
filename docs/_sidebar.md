@@ -1,4 +1,4 @@
-<b>Post-Processing FX v5.1+</b>
+<b>Post-Processing FX v6.2+</b>
 <br/><br/>
 ----
 
@@ -6,6 +6,7 @@
 * [Requirements](./pages/requirements.md "Requirements and compatibility")
 * [Installation](./pages/installation.md "Installation")
 * [Getting Started](./pages/quick-start.md "Getting Started")
+* [Getting Started - FAST](./pages/quick-start-fast.md "Getting Started - FAST")
 
 <br/>
 
@@ -35,6 +36,7 @@
 * [Updating PPFX](./pages/tutorials/updating_ppfx.md "Updating Post-Processing FX")
 * [Debugging](./pages/tutorials/debugging.md "Debugging Post-Processing FX")
 * [Layers](./pages/tutorials/layers.md "Adding effects to layers")
+* [Shockwaves](./pages/tutorials/shockwaves.md "Creating shockwaves")
 * [Multiple Stacks](./pages/tutorials/multiple_stacks.md "Multiple Rendering Stacks")
 * [Area Masks](./pages/tutorials/area_masks.md "Using area masks for UI")
 * [Adding External Effects](./pages/tutorials/add_external_effects.md "Adding custom effects to the stack")

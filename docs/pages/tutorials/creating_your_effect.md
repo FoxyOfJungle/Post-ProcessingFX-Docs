@@ -9,9 +9,9 @@ So, basically you only need a template, which is a constructor:
 
 ```gml
 /// @desc My custom effect.
-function FX_Effect(_enabled, _parameter1, _parameter2) : __PPF_FXSuperClass() constructor {
-    effectName = "effect"; // used to reference the effect
-	stackOrder = -50; // the rendering order
+function FX_Effect(_enabled, _parameter1, _parameter2) : FX_Effect() constructor {
+    effectName = "effect"; // Used to reference the effect. Do not use spaces.
+	stackOrder = -50; // The rendering order. It's negative here because it will be the first to be executed.
     isExternalEffect = true;
 
     // parameters
@@ -58,14 +58,13 @@ function FX_Effect(_enabled, _parameter1, _parameter2) : __PPF_FXSuperClass() co
 	}
 
     // for Debug UI usage
-    static GetEditorData = function(editor) {
-        with(editor) {
-            inspector_struct
-			.AddElement(new __ppf_ui_menu("EFFECT", false, 2))
-			.AddElement(new __ppf_ui_checkbox("Effect Enabled", 0, gui_ef_get_enabled(FX_EFFECT_EXT.EFFECT), function(checked) {return gui_ef_set_enabled(checked, FX_EFFECT_EXT.EFFECT);}))
-			.AddElement(new __ppf_ui_slider("Intensity", 0, false, gui_ef_get_param_simple(FX_EFFECT_EXT.EFFECT, PP_EFFECT_INTENSITY), 0, 1, true, function(output) {gui_ef_set_param_simple(output, FX_EFFECT_EXT.EFFECT, PP_EFFECT_INTENSITY);}))
-        }
-        return 3; // number of elements
+    static GetEditorData = function(_inspector, _rootMenu, _editor) {
+        var _effect = self;
+		
+		var _effectMenu = _inspector.AddElement(new __PPFX_UIElementSection("EFFECT NAME", false, 1), _rootMenu);
+			_inspector.AddElement(new __PPFX_UIElementCheckbox(_effect, "enabled", "Enabled"), _effectMenu);
+			_inspector.AddElement(new __PPFX_UIElementSlider(_effect, "parameter1", "Parameter 1", 0, 1), _effectMenu);
+            _inspector.AddElement(new __PPFX_UIElementSlider(_effect, "parameter2", "Parameter 2", 0, 1), _effectMenu);
     }
 }
 ```
@@ -73,7 +72,7 @@ The only mandatory function is `Draw()`, the others don't even need to exist (th
 
 > You need to set `isExternalEffect` to `true`.
 
-> It is mandatory to inherit `__PPF_FXSuperClass`.
+> It is mandatory to inherit `FX_Effect`.
 
 > Note: it is not necessary to pre-multiply the alpha in the shader.
 
@@ -93,7 +92,7 @@ Type list:
 <ul class="a">
     <li>"vec2": An array of [x, y];</li>
     <li>"vec3" An array of [x, y, z];</li>
-    <li>"color" A color array. The range is [1, 1, 1] -> white, which is like [255, 255, 255]; This will be interpreted by the shader;</li>
+    <li>"color" A color array, where each value goes from 0 to 1. That is, [1, 1, 1] = white, which is like [255, 255, 255]; This will be interpreted by the shader;</li>
     <li>"texture" A pointer indicating that the parameter is a texture, which will return `undefined` (because textures can't be saved).</li>
 </ul>
 
@@ -103,7 +102,7 @@ Type list:
 
 **It's optional**. It is used to create the UI where you can edit the parameters in real time. 
 
-You need to take a look at `__ppf_DebugUI` to know how the UI system works.
+You need to take a look at `__ppf_DebugUI2` to know how the UI system works.
 
 </br>
 

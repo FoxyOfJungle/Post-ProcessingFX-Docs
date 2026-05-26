@@ -12,7 +12,8 @@ Note: All content here is also available using Feather, from GameMaker, offline.
 
 # PPFX_Renderer()
 
-`PPFX_Renderer()` is essentially responsible for drawing the visual effects. It works both for full screen and for layers. You can create as many renderers as you need, depending on what you're going to do.
+`PPFX_Renderer()` It is essentially responsible for rendering effects on a surface and drawing on the screen or layers. You can create as many renderers as you need, depending on what you're going to do.  
+
 Examples:
 
 <ul class="a">
@@ -24,13 +25,12 @@ Examples:
 
 > By instantiating the renderer with "new" operator, you will get a struct, in which you will be able to control the renderer with the methods below.
 
-> Renderers need to be destroyed using `.Destroy()` when no longer used, to avoid memory leaks.
-
+> Renderers need to be destroyed using `.Destroy()` when no longer used, to avoid memory leaks.  
 
 ## .ProfileLoad()
 
 ```gml
-.ProfileLoad(profile, merge, filter);
+.ProfileLoad(profile, merge, filter, loadOnce);
 ```
 This function loads a previously created profile. Effects REFERENCE is copied, which means that if you modify the effect struct, this will be reflected in the renderer as well.  
 After loading the profile, the renderer will reorder the effects based on their stackOrder and draw them as defined.  
@@ -41,6 +41,7 @@ Your Profile must NOT have repeated effects, otherwise they will be replaced. If
 | profile | Struct | Profile struct created with new PPFX_Profile(). |  
 | merge | Bool | If you want to merge the profile with existing effects in the renderer (without replacing everything). |  
 | filter | Undefined, Macro(String), Array<Macro(String)> | If defined, will add only the selected effect. Use the "FF_" effect macro directly, or an array of macros. Example: [FF_BLOOM, FF_DOF] will only add those two effects among several in the profile. The effect should exist in the profile to be filtered (otherwise nothing happens). |  
+| loadOnce | Bool | If true, if you call this function again and the profile reference is the same, it will not be loaded again. |  
 
 #### Returns: [Undefined] - N/A
 
@@ -78,20 +79,46 @@ The code above causes the renderer system to remove its profile.
 
 
 
+## .Render()
+
+```gml
+.Render(surface);
+```
+This function copies the input surface, applies the effects (renderize), and returns the final surface with the effects already applied.  
+It uses the size of the referenced surface for internal rendering resolution (example: application_surface or custom surface size).  
+It's recommended to call this function in the "Draw End" event. But you can call it in Post-Draw or other Draw events without issues.  
+
+| Name | Type | Description |  
+|-----------|:-----------:|-----------:|  
+| surface | Surface | The input surface to copy from. You can use `application_surface` or your own. |  
+
+#### Returns: [Undefined] - N/A
+
+### Example:
+```gml
+var _finalSurf = renderer.Render(application_surface);
+```
+The function above copies the input surface (application_surface), applies the effects, and returns the final surface with the effects. The output surface is exactly the same size as the output surface.
+
+<br><br><br>
+
+
+
+
+
 ## .Draw()
 
 ```gml
-.Draw(surface, x, y, w, h);
+.Draw(x, y, w, h);
 ```
-Draw Post-processing's final surface on screen. This function works like draw_surface_stretched(), but with the effects applied. The resolution of the internal surfaces will be the same as the input surface.  
+Draw (if enabled) the final surface on the screen. You can call this in any Draw event, but generally Post-Draw.  
 
 This is similar to `draw_surface_stretched()`.
 
 | Name | Type | Description |  
 |-----------|:-----------:|-----------:|  
-| surface | Surface | The input surface to copy from. You can use `application_surface` or your own. |  
-| x | Real | The x position og where to draw the surface. |  
-| y | Real | The y position og where to draw the surface. |  
+| x | Real | The x position of where to draw the surface. |  
+| y | Real | The y position of where to draw the surface. |  
 | w | Real | The width at which to draw the surface. |  
 | h | Real | The height at which to draw the surface. |  
 
@@ -115,23 +142,20 @@ The above example draws the "renderer" post-processing system on the screen. Ins
 ## .DrawInFullscreen()
 
 ```gml
-.DrawInFullscreen(surface);
+.DrawInFullscreen();
 ```
-Similar to `.Draw`, but it handles the sizes and positions for you, for ease.  
-This function automatically detects the draw event you are drawing (Post-Draw or Draw GUI Begin).  
-It uses the size of the referenced surface for internal rendering resolution (example: application_surface size).  
-For the width and height size (scaled rendering size): If drawing in Post-Draw, is the size of the window (frame buffer). If in Draw GUI Begin, the size of the GUI.  
+Easily draw (if enabled) Post-processing renderer's final surface in full screen. It is an easy alternative to the normal .Draw() method.  
 
-| Name | Type | Description |  
-|-----------|:-----------:|-----------:|  
-| surface | Surface | Render surface to copy from. (You can use application_surface). |  
+This function automatically detects the draw event you are drawing (Post-Draw or Draw GUI Begin).  
+
+For the width and height size (scaled rendering size): If drawing in Post-Draw, is the size of the window (frame buffer). If in Draw GUI Begin, the size of the GUI.  
 
 
 #### Returns: [Undefined] - N/A
 
 ### Example:
 ```gml
-renderer.DrawInFullscreen(application_surface);
+renderer.DrawInFullscreen();
 ```
 The above example draws the "renderer" post-processing system on the screen.
 
@@ -779,6 +803,7 @@ sprite_save(_sprite, 0, "LUT.png");
 In the example above, we get the LUT sprite and save it to disk.
 
 <br><br><br>
+
 
 
 

@@ -3,9 +3,14 @@
 
 This page explains how to easily add post-processing effects to your game.
 This quick-start guide requires a basic knowledge of GML and GameMaker. (No shader knowledge required).  
-Estimated setup time: 10 min or less.
+
+Estimated setup time: 10 min or less.  
 
 First of all, the best way to learn how to use a library is not to try to understand how it works internally. You just need to understand how to use the offered functions. This is part of the SOLID concept. Everything has been carefully thought out to make it easier for the end user.  
+
+> You can also see the project working in the .yyz example GM project.
+
+> There is complete Feather documentation as well.
 
 
 ## Briefing <!-- {docsify-ignore} -->
@@ -35,12 +40,6 @@ In order to display the effects of Post-Processing, you first need to create an 
 
 ![Quick Start](/../images/QuickStart_0.png)
 
-### Persistent
-
-I recommend enabling the object's `persistent` mode, so Post-Processing will not be destroyed when changing rooms. But this is optional. If you do, it is recommended that this object be one of the first objects to be created in the game.  
-
-![Quick Start](/../images/QuickStart_1.png)
-
 
 ### Create Event
 
@@ -49,21 +48,10 @@ Add a **Create Event** to the object if it doesn't exist
 ![Quick Start](/../images/QuickStart_2.gif)
 
 
-### Disable default application_surface drawing (optional)
-
-If you're applying post-processing in fullscreen, in order for Post-Processing FX to have full control of the final drawing of the game, you need to disable <a href="https://manual-en.yoyogames.com/#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FSurfaces%2Fapplication_surface.htm" target="_blank">application_surface</a>.</br>
-For that, use the following function just once. This will work through the rest of the game.
-
-```gml
-application_surface_draw_enable(false);
-```
-
-> If you want to apply post-processing only to layers, this is not necessary, since the post-processing will be drawn on the layer (or layers) itself, which is being drawn inside the application_surface. If you are applying post-processing to layers and are _also_ applying another PPFX_Renderer() in fullscreen, this is necessary.
-
 
 ### Creating a PPFX_Renderer()
 
-The renderer is responsible for rendering the effects somewhere (either full screen or in layers). It contains the important internal variables for the effects to work. As Post-Processing FX is modular, it allows you to create multiple renderers.  
+The renderer is responsible for rendering the effects to a surface (either full screen or in layers). It contains the important internal variables for the effects to work. As Post-Processing FX is modular, it allows you to create multiple renderers.  
 
 We will use the renderer as a basis for the other post-processing functionality, including changing effects behaviours.
 
@@ -80,11 +68,11 @@ In the example above, we set the variable name to "renderer", this can be any ot
 
 ## 3. Adding Effects <!-- {docsify-ignore} -->
 
-Effects need to be added to an 1D array. Look at the following example:
+Effects need to be added to an array. Look at the following example:
 
 ```gml
 var effects = [
-    new FX_Colorize(true, color_get_hue(c_orange), 200, 240),
+    new FX_Colorize(true, c_orange),
     new FX_SineWave(true, 1),
 ];
 ```
@@ -98,7 +86,7 @@ That is, these arguments are optional, for example:
 You can middle click on the effect function to see the default parameter values.
 Note that effects start with the prefix "`FX_`", to make finding all effects faster in GameMaker's intellisense (code completion).
 
-> In GameMaker, you can skip parameters if you do something like: `new FX_Bloom(true,,, 4)`. This will make the effect use the predefined value.
+> In GameMaker, you can skip parameters if you do something like: `new FX_Bloom(true,,,, 4)`. This will make the effect use the predefined value.
 
 </br>
 
@@ -131,19 +119,18 @@ You can apply the `PPFX_Renderer` to layers using `.LayerApply()` in the Create 
 </br>
 
 
-## Final Creation Code
+## Final Creation Code <!-- {docsify-ignore} -->
 
 So, our final creation code looks like this:
-```gml
-// Disable default game rendering. Should be called once (or when you use ppfx)
-application_surface_draw_enable(false);
 
+**Create Event:**  
+```gml
 // Create a post-processing renderer.
 renderer = new PPFX_Renderer();
 
 // Create profile with all effects.
 var effects = [
-    new FX_Colorize(true, color_get_hue(c_orange), 200, 240),
+    new FX_Colorize(true, c_orange),
     new FX_SineWave(true, 1),
 ];
 mainProfile = new PPFX_Profile("Main", effects);
@@ -153,52 +140,51 @@ renderer.ProfileLoad(mainProfile);
 ```
 That's all you need to initialize everything.
 
-> TIP: You can use a `switch(room)` and create and load the profiles in the **Room Start** event, for different rooms. You can use `.ProfileUnload()` to remove any profile from the system.
+> TIP: You can use a `switch(room)` and create and load the profiles in the **Room Start** event, for different rooms. Calling .ProfileLoad() funciton can override existing effects or add new ones, depending on your preference.
 
 </br>
 
 
-## Drawing <!-- {docsify-ignore} -->
+## Rendering & Drawing <!-- {docsify-ignore} -->
 
-To render the Post-Processing on the game screen, all you need is to call the `.DrawInFullscreen()` or `.Draw()` function/method. .Draw() lets you define positions and sizes manually (useful for split-screen).
+Post-Processing FX can be used to take a surface, add effects to it, and then draw the surface with effects on the screen.
 
-This function works essentially the same as `draw_surface_stretched()`, but with the effects applied to the input surface.
+To make the renderer apply effects to the input surface (the game screen, for example), all you need is to call the `.Render(inputSurface)` function/method.  
 
-We strongly recommend using the `Post-Draw event` only (although you can use the *Draw GUI Begin* event as well). Because this event is independent of cameras, views and others. This way we have full control of the game drawing.
+And to draw the already rendered surface with effects, just call `.DrawSelf()`.  
+The `.Draw()` lets you define positions and sizes manually, this function works essentially the same as `draw_surface_stretched()`, but with the effects applied to the input surface.  
+
+For fullscreen effects, we strongly recommend using the **Draw End** event to Render and **Post-Draw** event to Draw. If your game is single-player, you can call everything in the **Post-Draw** without any problems.  
+
+You can use other events if you only want to use PPFX on your custom surface, without problems.  
 
 Reference: <a href="https://manual-en.yoyogames.com/#t=The_Asset_Editors%2FObject_Properties%2FDraw_Events.htm">Draw Events</a>.
 
-> If you applied the renderer to layers using the `.LayerApply()` function, this is not necessary, as this function already causes the renderer to be drawn on the layer using layer scripts.
+> If you applied the renderer to layers using the `.LayerApply()` function, it's not necessary to Render and Draw! as this function already causes the renderer to render and draw on the layer using layer scripts.
 
 > We strongly recommend you activate the "Clear Display Buffer" option in the room settings, to prevent ghosting or blending issues.
 
 
 
-## Final Draw Code
+## Final Draw Code <!-- {docsify-ignore} -->
 
-The code below draws the game screen with post-processing applied in fullscreen.  
+The code below will render and draw the game screen with post-processing applied in fullscreen.  
 
+**Post-Draw Event:**  
 ```gml
 // Draw post-processing in full screen
-renderer.DrawInFullscreen(application_surface);
+renderer.Render(application_surface);
+renderer.DrawSelf();
 ```
 
-This function automatically detects the draw event you are drawing (Post-Draw or Draw GUI Begin).  
-
-It uses the size of the referenced surface for internal rendering resolution (example: application_surface size).  
-
-If you are using `.Draw()`: for the size parameters, width ("w") and height ("h") are the scaled rendering size. If drawing in Post-Draw, is the size of the window (frame buffer). If in Draw GUI Begin, the size of the GUI.  
+It uses the size of the referenced surface for internal rendering resolution (example: application_surface size).   
 
 > It is very important to mention that the larger the surface/application_surface size, the more it will demand from the GPU.  
 
-> It is worth remembering that `Post-Draw event is independent of cameras and views`.  
+> It is worth remembering that `Post-Draw event is independent of cameras and viewports`.  
 It is based on the size of the display buffer (*window* size), and is placed *before* the Draw GUI events. Which means the effects won't be applied on the game UI as GameMaker doesn't render the GUI event on the `application_surface`. (There are some ways around this and there is an example in the project just about that).  
 
-> Despite being independent of view ports, you can use their position and size as a base, to use in split-screen games, for example (when using .Draw() method).
-
-> Be aware that: You should only draw once for each `PPFX_Renderer()`. (You can have multiple renderers too).
-
-</br></br>
+> If your game is split-screen, since Draw End render for each viewport, you might want to use [surface_get_target()](https://manual.gamemaker.io/lts/en/GameMaker_Language/GML_Reference/Drawing/Surfaces/surface_get_target.htm) instead of `application_surface`, requiring a `PPFX_Renderer` for each viewport. If your game is single-player, this is not necessary.
 
 
 If you use the `.Draw()` method, the following image will better illustrate how it works (basically a `draw_surface_stretched`):
@@ -207,7 +193,7 @@ If you use the `.Draw()` method, the following image will better illustrate how 
 *Game: Super Mario World 2 - Yoshi's Island. Copyright (C) 1995, Nintendo. Used for illustration only.*
 
 
-## 5. Conclusion
+## 5. Conclusion <!-- {docsify-ignore} -->
 
 With that it is enough to apply the effects on the screen:
 
